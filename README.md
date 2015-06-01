@@ -1,3 +1,3 @@
-Fresh-Tomatoes
+Fresh Tomatoes
 ==============
 Movie reviewing web application
