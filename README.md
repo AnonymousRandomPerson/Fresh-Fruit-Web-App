@@ -1,3 +1,3 @@
-Fresh Tomatoes
+Fresh Fruit
 ==============
-Movie reviewing web application
+Movie review web application
