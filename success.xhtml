@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui" >
+    
+    <h:head>
+        <title>Welcome to the App</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    
+    <h:body>
+        <div>
+            Welcome to the application
+            
+            <h:outputText value="#{user.username}" />
+            
+        
+        <h:form>
+            <p:accordionPanel rendered="true">
+                <p:tab title="Good Information">
+                    <h:outputText value= "Now is the time for all good people to
+                                  come to the aid of their compiler."/>
+                </p:tab>
+                <p:tab title="More Good Information">
+	 	   <h:outputText value="Abandon hope all ye who code here." />
+                   
+                </p:tab>
+                <p:tab title="Last Good Information">
+                    <h:outputText value="Last bit of useful stuff" />
+                </p:tab>
+
+            </p:accordionPanel>
+            <p:commandLink value="Go to the weather page" action="weather" />
+        </h:form>
+        
+        </div>
+    </h:body>
+</html>
