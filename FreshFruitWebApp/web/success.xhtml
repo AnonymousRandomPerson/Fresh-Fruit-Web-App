@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"         
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Hello CS2340</title>
+        
+    </h:head>
+    <h:body>
+        <h:form>       
+            <p:panel id="panel" header="Login to Application" footer="Weather Buddy">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="username" value="User Name:" />
+                    <p:inputText id="username" value="#{user.username}" 
+                                 required="true" label="Username">
+                        <f:validateLength minimum="2"/>
+                    </p:inputText>
+                        
+                    <p:message for="username" display="icon" />
+                    
+                    <p:outputLabel for="password" value="Password:" />
+                    <p:password id="password" value="#{user.password}" 
+                                label="Password" required="true" 
+                                feedback="true">
+                        <f:validateLength minimum="2" />
+                    </p:password>
+                    
+                    <p:message for="password" display="Text" />
+                </h:panelGrid>
+               
+                <p:commandButton update="panel" value="Submit" action="#{user.login()}" 
+                             icon="ui-icon-check" />
+                
+            </p:panel>  
+        </h:form>
+    </h:body>
+</html>
+
