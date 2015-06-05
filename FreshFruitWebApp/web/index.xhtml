@@ -15,23 +15,21 @@
                 <h:panelGrid columns="3" cellpadding="5">
                     <p:outputLabel for="username" value="User Name:" />
                     <p:inputText id="username" value="#{user.username}" 
-                                 required="true" label="Username">
-                        <f:validateLength minimum="2"/>
+                                 label="Username">
                     </p:inputText>
                         
                     <p:message for="username" display="icon" />
                     
                     <p:outputLabel for="password" value="Password:" />
                     <p:password id="password" value="#{user.password}" 
-                                label="Password" required="true" 
+                                label="Password" 
                                 feedback="true">
-                        <f:validateLength minimum="2" />
                     </p:password>
                     
                     <p:message for="password" display="Text" />
                 </h:panelGrid>
                
-                <p:commandButton update="panel" value="Submit" action="#{user.login()}" 
+                <p:commandButton update="panel" value="Submit" action="login" 
                              icon="ui-icon-check" />
                 
             </p:panel>  
