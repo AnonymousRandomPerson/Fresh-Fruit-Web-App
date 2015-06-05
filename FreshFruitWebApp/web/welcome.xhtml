@@ -5,27 +5,24 @@
       xmlns:p="http://primefaces.org/ui"         
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Fresh Fruit</title>
+        <title>Fresh Fruit Movie Recommender</title>
         
     </h:head>
     <h:body>
-        <h:form>
+        <h:form>     
             <center>
-                <p:panel id="panel" header="Welcome to Fresh Fruit" style="text-align: center; width:30%">
-                    <p:messages id="msgs" />
-                    <h:panelGrid columns="3" cellpadding="5">
-                        
-
-                       
-                    </h:panelGrid>
-
-                    <p:commandButton update="panel" value="Login" action="login" 
-                                 icon="ui-icon-check" />
-                    <p:commandButton update="panel" value="Register" 
-                                 icon="ui-icon-check" />
+            <p:panel id="panel" header="Welcome to Fresh Fruit Movie Recommender" style="text-align: center; width:40%">
+                <p:messages id="msgs" />
+                <h:panelGrid columns="3" cellpadding="5">
                     
-
-                </p:panel>
+                </h:panelGrid>
+               
+                <p:commandButton update="panel" value="Login" action="login" 
+                             icon="ui-icon-check" />
+                 <p:commandButton update="panel" value="Register" 
+                             icon="ui-icon-check" />
+                
+            </p:panel>  
             </center>
         </h:form>
     </h:body>

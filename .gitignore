@@ -5,7 +5,6 @@ build/*
 /Fresh Fruit/nbproject/private/
 /Fresh Fruit/Fresh Fruit-war/nbproject/private/
 /Fresh Fruit/Fresh Fruit-ejb/nbproject/private/
-/FreshFruitWebApp/nbproject/genfiles.properties
-/FreshFruitWebApp/nbproject/private/
+FreshFruitWebApp/nbproject/*
 /FreshFruitWebApp/build/
 /FreshFruitWebApp/dist/
