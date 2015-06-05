@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 public class User implements Serializable {
     private String username;
     private String password;
-    private final int LIMITTRIES = 3;
+    private final int LIMITTRIES = 999999;
     private int numTries;
     
     @ManagedProperty("#{userManager}")
@@ -68,6 +68,11 @@ public class User implements Serializable {
             return null;
         }
         return "home";
+    }
+    
+    public String logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "/welcome.xhtml?faces-redirect=true";
     }
     
     public String register() {
