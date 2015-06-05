@@ -12,28 +12,13 @@
         <h:form>       
             <p:panel id="panel" header="Home" footer="Weather Buddy">
                 <p:messages id="msgs" />
-                <h:panelGrid columns="3" cellpadding="5">
-                    <p:outputLabel for="username" value="User Name:" />
-                    <p:inputText id="username" value="#{user.username}" 
-                                 required="true" label="Username">
-                        <f:validateLength minimum="2"/>
-                    </p:inputText>
-                        
-                    <p:message for="username" display="icon" />
-                    
-                    <p:outputLabel for="password" value="Password:" />
-                    <p:password id="password" value="#{user.password}" 
-                                label="Password" required="true" 
-                                feedback="true">
-                        <f:validateLength minimum="2" />
-                    </p:password>
-                    
-                    <p:message for="password" display="Text" />
-                </h:panelGrid>
                
                 <p:commandButton update="panel" value="Submit" action="#{user.login()}" 
                              icon="ui-icon-check" />
                 
+                
+                <p:commandButton update="panel" value="logout" action="#{user.logout()}"
+                                 icon="ui-icon-check"/>
             </p:panel>  
         </h:form>
     </h:body>
