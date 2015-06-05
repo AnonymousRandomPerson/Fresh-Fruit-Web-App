@@ -21,7 +21,7 @@ import javax.faces.context.FacesContext;
 public class User implements Serializable {
     private String username;
     private String password;
-    private final int LIMITTRIES = 999999;
+    private final int LIMITTRIES = 100;
     private int numTries;
     
     @ManagedProperty("#{userManager}")
