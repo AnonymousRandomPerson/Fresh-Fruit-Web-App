@@ -1,18 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+package FreshFruitWebApp.src.java;
 
-/**
- *
- * @author robertwaters
- */
 class UserData {
     private String name;
     private String password;
-    private String email;
-    private String address;
     
     UserData(String nm, String ps) {
         name = nm;

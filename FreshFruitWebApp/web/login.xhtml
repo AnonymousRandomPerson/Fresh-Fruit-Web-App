@@ -5,36 +5,41 @@
       xmlns:p="http://primefaces.org/ui"         
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Hello CS2340</title>
+        <title>Fresh Fruit Login</title>
         
     </h:head>
     <h:body>
-        <h:form>       
-            <p:panel id="panel" header="Login to Application" footer="Weather Buddy">
-                <p:messages id="msgs" />
-                <h:panelGrid columns="3" cellpadding="5">
-                    <p:outputLabel for="username" value="User Name:" />
-                    <p:inputText id="username" value="#{user.username}" 
-                                 required="true" label="Username">
-                        <f:validateLength minimum="2"/>
-                    </p:inputText>
-                        
-                    <p:message for="username" display="icon" />
-                    
-                    <p:outputLabel for="password" value="Password:" />
-                    <p:password id="password" value="#{user.password}" 
-                                label="Password" required="true" 
-                                feedback="true">
-                        <f:validateLength minimum="2" />
-                    </p:password>
-                    
-                    <p:message for="password" display="Text" />
-                </h:panelGrid>
-               
-                <p:commandButton update="panel" value="Submit" action="#{user.login()}" 
-                             icon="ui-icon-check" />
-                
-            </p:panel>  
+        <h:form>
+            <center>
+                <p:panel id="panel" header="Login" style="text-align:center; width:30%">
+                    <p:messages id="msgs" />
+                    <center>
+                        <h:panelGrid columns="3">
+                            <p:outputLabel for="username" value="Username:" />
+                            <p:inputText id="username" value="#{user.username}" 
+                                         label="Username">
+                            </p:inputText>
+
+                            <p:message for="username" display="icon" />
+
+                            <p:outputLabel for="password" value="Password:" />
+                            <p:password id="password" value="#{user.password}" 
+                                        label="Password">
+                            </p:password>
+
+                            <p:message for="password" display="Text" />
+                        </h:panelGrid>
+                    </center>
+
+                    <p:commandButton update="panel" value="Login" action="#{user.login()}" 
+                                 icon="ui-icon-check" />
+                    <p:commandButton update="panel" value="Register" action="#{user.register()}"
+                                 icon="ui-icon-plusthick" />
+                    <p:commandButton update="panel" value="Cancel" action="#{user.cancel()}" 
+                                 icon="ui-icon-closethick" />
+
+                </p:panel>
+            </center>
         </h:form>
     </h:body>
 </html>
