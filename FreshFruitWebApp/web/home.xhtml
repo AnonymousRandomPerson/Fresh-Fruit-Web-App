@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"         
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Fresh Fruit</title>
+        <title>Fresh Fruit Home</title>
         
     </h:head>
     <h:body>
@@ -13,9 +13,12 @@
             <center>
             <p:panel id="panel" header="Fresh Fruit Home" style="text-align: center; width:30%">
                 <p:messages id="msgs" />
-                <p>Site under construction.</p>
+                <p>Site Under Construction.</p>
+                
                 <p:commandButton update="panel" value="Logout" action="#{user.logout()}"
                                  icon="ui-icon-power"/>
+                <p:commandButton update="panel" value="Profile" action="#{user.profile()}"
+                                 icon="ui-icon-plusthick"/>
             </p:panel> 
             </center>
         </h:form>

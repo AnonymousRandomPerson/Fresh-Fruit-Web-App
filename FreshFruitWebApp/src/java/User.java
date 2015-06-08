@@ -93,6 +93,19 @@ public class User implements Serializable {
         return "welcome";
     }
     
+    public String cancelHome() {
+        return "home";
+    }
+    
+    public String profile() {
+        return "profile";
+    }
+    
+    public String updateProfile() {
+        
+        return "home";
+    }
+    
     public void setUserManager(UserManager um) {
         userManager = um;
     }
