@@ -1,37 +1,25 @@
-package FreshFruitWebApp.src.java;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import java.io.Serializable;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 
-/**
- *
- * @author robertwaters
- */
 @ManagedBean
 @SessionScoped
 public class User implements Serializable {
     private String username;
     private String password;
-    private final int LIMITTRIES = 100;
+    private String email;
     private int numTries;
     
     @ManagedProperty("#{userManager}")
     private UserManager userManager;
     
-
     /**
      * Creates a new instance of User
      */
-    public User() {
+    public User(String username, String password) {
+        this.username = username;
+        this.password = password;
         numTries = 0;
     }
     
@@ -43,6 +31,10 @@ public class User implements Serializable {
         return password;
     }
     
+    public String getEmail() {
+        return email;
+    }
+    
     public void setUsername(String u) {
         username = u;
     }
@@ -51,63 +43,28 @@ public class User implements Serializable {
         password = p;
     }
     
-    public String login() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (username.equals("")) {
-            context.addMessage(null, new FacesMessage("No username entered."));
-            return null;
-        }
-        if (numTries >= LIMITTRIES) {
-            context.addMessage(null, new FacesMessage("You have exceeded your number of attempts to log in."));
-            return null;
-        }
-        UserData data = userManager.find(username);
-        if (data == null || !data.checkLogin(password)) {
+    public void setEmail(String e) {
+        email = e;
+    }
+    
+    public boolean checkLogin(String p) {
+        if (p.equals(password)) {
+            return true;
+        } else {
             numTries++;
-            context.addMessage(null, new FacesMessage("Username or password incorrect."));
-            return null;
+            return false;
         }
-        return "home";
     }
     
-    public String logout() {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        return "/welcome.xhtml?faces-redirect=true";
-    }
-    
-    public String register() {
-        FacesContext context = FacesContext.getCurrentInstance();
-        if (username.equals("")) {
-            context.addMessage(null, new FacesMessage("No username entered."));
-            return null;
-        }
-        if (userManager.find(username) != null) {
-            context.addMessage(null, new FacesMessage("Username already exists."));
-            return null;
-        }
-        userManager.makeUser(username, password);
-        return "home";
-    }
-    
-    public String cancel() {
-        return "welcome";
-    }
-    
-    public String cancelHome() {
-        return "home";
-    }
-    
-    public String profile() {
-        return "profile";
-    }
-    
-    public String updateProfile() {
-        
-        return "home";
+    public boolean isLocked() {
+        return numTries >= UserManager.LIMITTRIES;
     }
     
     public void setUserManager(UserManager um) {
         userManager = um;
     }
 
+    public void editProfile() {
+        
+    }
 }

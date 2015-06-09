@@ -1,5 +1,3 @@
-package FreshFruitWebApp.src.java;
-
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
@@ -9,25 +7,20 @@ import javax.faces.bean.ApplicationScoped;
 @ApplicationScoped
 public class UserManager {
     
-    private Map<String, UserData> users = new HashMap<>();
+private Map<String, User> userList = new HashMap<>();
+    public static final int LIMITTRIES = 3;
 
     /**
      * Creates a new instance of UserManager
      */
     public UserManager() {
-        makeSomeUsers();
-    }
-
-    private void makeSomeUsers() {
-        makeUser("user", "pass");
     }
     
     public void makeUser(String user, String pass) {
-        users.put(user, new UserData(user, pass));
+        userList.put(user, new User(user, pass));
     }
 
-    UserData find(String username) {
-       return users.get(username);
+    public User find(String username) {
+       return userList.get(username);
     }
-    
 }

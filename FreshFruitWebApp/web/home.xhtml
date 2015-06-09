@@ -13,12 +13,12 @@
             <center>
             <p:panel id="panel" header="Fresh Fruit Home" style="text-align: center; width:30%">
                 <p:messages id="msgs" />
-                <p>Site Under Construction.</p>
+                <p>Site under construction.</p>
                 
-                <p:commandButton update="panel" value="Logout" action="#{user.logout()}"
+                <p:commandButton update="panel" value="Profile" action="#{ui.profile()}"
+                                 icon="ui-icon-pencil"/>
+                <p:commandButton update="panel" value="Logout" action="#{ui.logout()}"
                                  icon="ui-icon-power"/>
-                <p:commandButton update="panel" value="Profile" action="#{user.profile()}"
-                                 icon="ui-icon-plusthick"/>
             </p:panel> 
             </center>
         </h:form>

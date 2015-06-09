@@ -16,23 +16,23 @@
                 <center>
                     <h:panelGrid columns="3">
                             <p:outputLabel for="username" value="Username:" />
-                            <p:inputText id="username" value="#{user.username}" 
+                            <p:inputText id="username" value="#{ui.username}" 
                                          label="Username">
                             </p:inputText>
 
                             <p:message for="username" display="icon" />
 
                             <p:outputLabel for="password" value="Password:" />
-                            <p:password id="password" value="#{user.password}" 
+                            <p:password id="password" value="#{ui.password}" 
                                         label="Password">
                             </p:password>
 
                             <p:message for="password" display="Text" />
                         </h:panelGrid>
                 </center>
-                <p:commandButton update="panel" value="Register" action="#{user.register()}"
+                <p:commandButton update="panel" value="Register" action="#{ui.register()}"
                                  icon="ui-icon-plusthick"/>
-                <p:commandButton update="panel" value="Cancel" action="#{user.cancel()}"
+                <p:commandButton update="panel" value="Cancel" action="#{ui.cancel()}"
                                  icon="ui-icon-closethick"/>
             </p:panel> 
             </center>
