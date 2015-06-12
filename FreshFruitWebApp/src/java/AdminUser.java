@@ -4,6 +4,10 @@ public class AdminUser extends User {
         super(username, password);
     }
     
+    public void listUsers() {
+        
+    }
+    
     public void banUser(User user) {
         
     }
