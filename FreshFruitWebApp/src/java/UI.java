@@ -20,11 +20,17 @@ public class UI {
     
     public UI() {
     }
-    
+    /**
+     * Get the username of a user
+     * @return String username
+     */
     public String getUsername() { 
         return username;
     }
-    
+    /**
+     * Get the password of a user
+     * @return String password
+     */
     public String getPassword() {
         return password;
     }
@@ -32,43 +38,73 @@ public class UI {
     public void getDob(int[] dob) {
         this.dob = dob;
     }
-    
+    /**
+     * Get the preferences of a user
+     * @return String the preferences
+     */
     public String getPreferences() {
         return preferences;
     }
-    
+    /**
+     * Get the major of a user
+     * @return String the major of the user
+     */
     public String getMajor() {
         return major;
     }
-    
-     public String getInterest() {
+    /**
+     * Get the interest of a user
+     * @return String interest
+     */
+    public String getInterest() {
         return interest;
     }
-    
+    /**
+     * set the preferences of a user
+     * @param pref 
+     */
     public void setPreferences(String pref) {
          preferences = pref;
     }
-    
+    /**
+     * set the interest of a user
+     * @param i 
+     */
     public void setInterest(String i){
         interest = i;
     }
-    
+    /**
+     * set the date of birth of a user
+     * @param dob 
+     */
     public void setDob(int[] dob) {
         this.dob = dob;
     }
-    
+    /**
+     * set the username of a user
+     * @param u 
+     */
     public void setUsername(String u) {
         username = u;
     }
-    
+    /**
+     * set the password of a user
+     * @param p 
+     */
     public void setPassword(String p) {
         password = p;
     }
-    
+    /**
+     * set the major of a user
+     * @param m 
+     */
     public void setMajor(String m) {
         major = m;
     }
-    
+    /**
+     * register a new user
+     * @return the name of the xhtml file
+     */
     public String register() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (username.equals("")) {
@@ -82,7 +118,10 @@ public class UI {
         context.addMessage(null, new FacesMessage("Registration successful."));
         return "home";
     }
-    
+    /**
+     * login a user
+     * @return the name of the xhtml file
+     */
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (username.equals("")) {
@@ -104,7 +143,10 @@ public class UI {
         }
         return null;
     }
-    
+    /**
+     * logout a user
+     * @return the name of the xhtml file
+     */
     public String logout() {
         username = "";
         major = "";
@@ -112,19 +154,31 @@ public class UI {
         preferences = "";
         return "welcome";
     }
-    
+    /**
+     * cancel and go back to welcome page
+     * @return name of xhtml file
+     */
     public String cancel() {
         return "welcome";
     }
-    
+    /**
+     * cancel and go back to home page
+     * @return name of xhtml file
+     */
     public String cancelHome() {
         return "home";
     }
-    
+    /**
+     * go to profile page
+     * @return name of xhtml file
+     */
     public String profile() {
         return "profile";
     }
-    
+    /**
+     * edit the profile of a user
+     * @return name of xhtml file
+     */
     public String editProfile(){
         FacesContext context = FacesContext.getCurrentInstance();
         User user = userManager.find(username);
@@ -137,7 +191,10 @@ public class UI {
        // user.setDob(dob);
         return "home";
     }
-    
+    /**
+     * set a usermanager
+     * @param um 
+     */
     public void setUserManager(UserManager um) {
         userManager = um;
     }

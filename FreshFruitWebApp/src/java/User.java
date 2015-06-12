@@ -74,7 +74,11 @@ public class User implements Serializable {
     public void setEmail(String e) {
         email = e;
     }
-    
+    /**
+     * check the login information
+     * @param p
+     * @return if the password is correct
+     */
     public boolean checkLogin(String p) {
         if (p.equals(password)) {
             return true;
@@ -83,16 +87,27 @@ public class User implements Serializable {
             return false;
         }
     }
-    
+    /**
+     * check if the account is locked
+     * @return 
+     */
     public boolean isLocked() {
         return numTries >= UserManager.LIMITTRIES;
     }
-    
+    /**
+     * set usermanager
+     * @param um 
+     */
     public void setUserManager(UserManager um) {
         userManager = um;
     }
 
-    
+    /**
+     * edit profile of a user
+     * @param user
+     * @param pass
+     * @param major 
+     */
         public void editProfile(String user, String pass, String major) {
 //            if (!pass.equals("")){
 //                this.password = pass;
