@@ -9,6 +9,9 @@ public class User implements Serializable {
     private String username;
     private String password;
     private String email;
+    private String preferences;
+    private String major;
+    private String interest;
     private int numTries;
     
     @ManagedProperty("#{userManager}")
@@ -31,6 +34,19 @@ public class User implements Serializable {
         return password;
     }
     
+    public String getMajor() {
+        return major;
+    }
+    
+    public String getPreferences() {
+        return preferences;
+    }
+    
+    
+    public String getInterest(){
+        return interest;
+    }
+    
     public String getEmail() {
         return email;
     }
@@ -41,6 +57,18 @@ public class User implements Serializable {
     
     public void setPassword(String p) {
         password = p;
+    }
+    
+    public void setMajor(String m) {
+        major = m;
+    }
+    
+    public void setPreferences(String pre) {
+        preferences = pre;
+    }
+    
+    public void setInterest(String i) {
+        interest = i;
     }
     
     public void setEmail(String e) {
@@ -64,7 +92,13 @@ public class User implements Serializable {
         userManager = um;
     }
 
-    public void editProfile() {
-        
+    
+        public void editProfile(String user, String pass, String major) {
+//            if (!pass.equals("")){
+//                this.password = pass;
+//            }
+                this.major = major;
     }
+
+    
 }

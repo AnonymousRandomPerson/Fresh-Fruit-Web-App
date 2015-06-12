@@ -13,6 +13,10 @@ public class UI {
     
     private String username;
     private String password;
+    private String major;
+    private String interest;
+    private String preferences; 
+    private int[] dob;
     
     public UI() {
     }
@@ -25,12 +29,44 @@ public class UI {
         return password;
     }
     
+    public void getDob(int[] dob) {
+        this.dob = dob;
+    }
+    
+    public String getPreferences() {
+        return preferences;
+    }
+    
+    public String getMajor() {
+        return major;
+    }
+    
+     public String getInterest() {
+        return interest;
+    }
+    
+    public void setPreferences(String pref) {
+         preferences = pref;
+    }
+    
+    public void setInterest(String i){
+        interest = i;
+    }
+    
+    public void setDob(int[] dob) {
+        this.dob = dob;
+    }
+    
     public void setUsername(String u) {
         username = u;
     }
     
     public void setPassword(String p) {
         password = p;
+    }
+    
+    public void setMajor(String m) {
+        major = m;
     }
     
     public String register() {
@@ -58,6 +94,9 @@ public class UI {
         } else if (user.isLocked()) {
             context.addMessage(null, new FacesMessage("You have exceeded your number of attempts to log in."));
         } else if (user.checkLogin(password)) {
+            major = user.getMajor();
+            interest = user.getInterest();
+            preferences = user.getPreferences();
             return "home";
         } else {
             context.addMessage(null, new FacesMessage("Username or password incorrect."));
@@ -66,7 +105,10 @@ public class UI {
     }
     
     public String logout() {
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        username = "";
+        major = "";
+        interest = "";
+        preferences = "";
         return "welcome";
     }
     
@@ -75,14 +117,23 @@ public class UI {
     }
     
     public String cancelHome() {
-        return "home";
+        return "welcome";
     }
     
     public String profile() {
         return "profile";
     }
     
-    public String updateProfile() {
+    public String editProfile(){
+        FacesContext context = FacesContext.getCurrentInstance();
+        User user = userManager.find(username);
+        user.setMajor(major);
+        user.setPreferences(preferences);
+        user.setInterest(interest);
+        user.setPassword(password);
+        
+        
+       // user.setDob(dob);
         return "home";
     }
     

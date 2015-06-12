@@ -58,8 +58,14 @@ public class StudentUser extends User {
         
     }
     
-    @Override
-    public void editProfile() {
-        
+    //@Override
+    public void editProfile(String user, String pass, String major, String preferences) {
+            
+            
+            if (!major.equals("")){
+                this.major = major;
+            }
+            
     }
+    
 }

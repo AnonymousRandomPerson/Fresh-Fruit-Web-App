@@ -16,6 +16,8 @@ private Map<String, User> userList = new HashMap<>();
     public UserManager() {
     }
     
+
+    
     public void makeUser(String user, String pass) {
         userList.put(user, new User(user, pass));
     }
