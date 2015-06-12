@@ -79,6 +79,7 @@ public class UI {
             return null;
         }
         userManager.makeUser(username, password);
+        context.addMessage(null, new FacesMessage("Registration successful."));
         return "home";
     }
     
