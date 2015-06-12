@@ -117,7 +117,7 @@ public class UI {
     }
     
     public String cancelHome() {
-        return "welcome";
+        return "home";
     }
     
     public String profile() {
