@@ -72,15 +72,24 @@ public class StudentUser extends User {
     public void setMajor(String major) {
         this.major = major;
     }
-    
+/**
+ * Method that sets the interests 
+ * @param interest takes in interests of user 
+ */
     public void setInterest(String interest) {
         this.interest = interest;
     }
-    
+/**
+ * Method that sets the status 
+ * @param status takes in a major
+ */
     public void setStatus(Status status) {
         this.status = status;
     }
-    
+ /**
+ * Method that sets the users preferences 
+ * @param preferences takes in a major
+ */
     public void setPreferences(String preferences) {
         this.preferences = preferences;
     }
@@ -89,6 +98,13 @@ public class StudentUser extends User {
         
     }
     
+/**
+ * Method that edits the profile 
+ * @param user takes in a user
+ * @param pass takes in a password
+ * @param preferences takes in a preference
+ * @param major takes in a major
+ */
     //@Override
     public void editProfile(String user, String pass, String major, String preferences) {
             
