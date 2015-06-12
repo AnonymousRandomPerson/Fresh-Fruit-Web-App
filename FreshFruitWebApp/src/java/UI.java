@@ -43,6 +43,7 @@ public class UI {
             return null;
         }
         userManager.makeUser(username, password);
+        context.addMessage(null, new FacesMessage("Registration Successful."));
         return "home";
     }
     
@@ -83,7 +84,7 @@ public class UI {
     }
     
     public String updateProfile() {
-        return "home";
+      return "home";
     }
     
     public void setUserManager(UserManager um) {
