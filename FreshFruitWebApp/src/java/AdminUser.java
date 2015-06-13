@@ -23,4 +23,8 @@ public class AdminUser extends User {
     public void removeReview(Review review) {
         
     }
+    
+    public void editProfile(String user, String pass, String email) {
+        
+    }
 }
