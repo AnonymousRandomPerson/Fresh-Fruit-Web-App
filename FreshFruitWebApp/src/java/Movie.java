@@ -1,11 +1,13 @@
+import java.util.Calendar;
+
 public class Movie {
     private String title;
     private String genre;
     private Review[] reviews;
-    private int[] releaseDate;
+    private Calendar releaseDate;
     private String synopsis;
     
-    public Movie(String title, String genre, Review[] ratings, int[] releaseDate, String synopsis) {
+    public Movie(String title, String genre, Review[] reviews, Calendar releaseDate, String synopsis) {
         this.title = title;
         this.genre = genre;
         this.reviews = reviews;

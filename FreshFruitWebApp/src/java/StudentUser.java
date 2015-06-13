@@ -1,13 +1,11 @@
 public class StudentUser extends User {
 
-    
     public StudentUser(String username, String password) {
         super(username, password);
     }
     
  /**
- * Status of the user 
- *
+ * Status of the user
  */
     public enum Status {
         Normal, Locked, Banned
@@ -20,15 +18,15 @@ public class StudentUser extends User {
     private String preferences;
     
  /**
- * Method that gets the date of birth 
- * @return the DOB
+ * Gets the date of birth.
+ * @return the date of birth
  */
     public int[] getDob() {
         return dob;
     }
     
  /**
- * Method that gets major
+ * Gets major.
  * @return the major
  */
     public String getMajor() {
@@ -36,22 +34,23 @@ public class StudentUser extends User {
     }
     
  /**
- * Method that gets interest
+ * Gets interests.
  * @return the interests
  */
     public String getInterest() {
         return interest;
     }
     
-    /**
- * Method that gets the status of user 
- * @return the status
+/**
+ * Gets the status of the user.
+ * @return the status of the user
  */
     public Status getStatus() {
         return status;
     }
+    
  /**
- * Method that gets preferences
+ * Gets preferences.
  * @return the preferences 
  */
     public String getPreferences() {
@@ -59,36 +58,40 @@ public class StudentUser extends User {
     }
     
 /**
- * Method that sets Dob
- * @param dob takes in a DOB
+ * Sets date of birth.
+ * @param dob the new date of birth
  */
     public void setDob(int[] dob) {
         this.dob = dob;
     }
+    
 /**
- * Method that sets the major
- * @param major takes in a major
+ * Sets the major
+ * @param major the new major
  */
     public void setMajor(String major) {
         this.major = major;
     }
+    
 /**
- * Method that sets the interests 
- * @param interest takes in interests of user 
+ * Sets the interests.
+ * @param interest the new user interests 
  */
     public void setInterest(String interest) {
         this.interest = interest;
     }
+    
 /**
- * Method that sets the status 
- * @param status takes in a major
+ * Sets the status.
+ * @param status the new status
  */
     public void setStatus(Status status) {
         this.status = status;
     }
+    
  /**
- * Method that sets the users preferences 
- * @param preferences takes in a major
+ * Sets the user's preferences.
+ * @param preferences the new preferences
  */
     public void setPreferences(String preferences) {
         this.preferences = preferences;
@@ -97,22 +100,25 @@ public class StudentUser extends User {
     public void reviewMovie() {
         
     }
-    
-/**
- * Method that edits the profile 
- * @param user takes in a user
- * @param pass takes in a password
- * @param preferences takes in a preference
- * @param major takes in a major
- */
-    //@Override
-    public void editProfile(String user, String pass, String major, String preferences) {
-            
-            
-            if (!major.equals("")){
-                this.major = major;
-            }
-            
+
+    /**
+     * Edits the profile of a user.
+     * @param user the user's new username
+     * @param pass the user's new password
+     * @param email the user's new email
+     * @param major the user's new major
+     * @param preferences the user's new preferences
+     * @param interest the user's new interests
+     */
+    public void editProfile(String user, String pass, String email, String major, String preferences, String interest) {
+        if (!username.equals(user)) {
+            userManager.changeUsername(username, user);
+        }
+        username = user;
+        password = pass;
+        this.email = email;
+        this.major = major;
+        this.preferences = preferences;
+        this.interest = interest;
     }
-    
 }

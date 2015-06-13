@@ -6,19 +6,19 @@ import javax.faces.bean.SessionScoped;
 @ManagedBean
 @SessionScoped
 public class User implements Serializable {
-    private String username;
-    private String password;
-    private String email;
-    private String preferences;
-    private String major;
-    private String interest;
-    private int numTries;
     
     @ManagedProperty("#{userManager}")
-    private UserManager userManager;
+    protected UserManager userManager;
+    
+    protected String username;
+    protected String password;
+    protected String email;
+    protected int numTries;
     
     /**
-     * Creates a new instance of User
+     * Creates a new instance of User.
+     * @param username the user's username
+     * @param password the user's password
      */
     public User(String username, String password) {
         this.username = username;
@@ -34,19 +34,6 @@ public class User implements Serializable {
         return password;
     }
     
-    public String getMajor() {
-        return major;
-    }
-    
-    public String getPreferences() {
-        return preferences;
-    }
-    
-    
-    public String getInterest(){
-        return interest;
-    }
-    
     public String getEmail() {
         return email;
     }
@@ -59,25 +46,13 @@ public class User implements Serializable {
         password = p;
     }
     
-    public void setMajor(String m) {
-        major = m;
-    }
-    
-    public void setPreferences(String pre) {
-        preferences = pre;
-    }
-    
-    public void setInterest(String i) {
-        interest = i;
-    }
-    
     public void setEmail(String e) {
         email = e;
     }
     /**
-     * check the login information
-     * @param p
-     * @return if the password is correct
+     * Checks the login information.
+     * @param p the attempted password
+     * @return true if the password is correct
      */
     public boolean checkLogin(String p) {
         if (p.equals(password)) {
@@ -88,32 +63,17 @@ public class User implements Serializable {
         }
     }
     /**
-     * check if the account is locked
-     * @return 
+     * Checks if the account is locked.
+     * @return true if the account is locked
      */
     public boolean isLocked() {
         return numTries >= UserManager.LIMITTRIES;
     }
     /**
-     * set usermanager
-     * @param um 
+     * Sets the user manager.
+     * @param um the user manager
      */
     public void setUserManager(UserManager um) {
         userManager = um;
     }
-
-    /**
-     * edit profile of a user
-     * @param user
-     * @param pass
-     * @param major 
-     */
-        public void editProfile(String user, String pass, String major) {
-//            if (!pass.equals("")){
-//                this.password = pass;
-//            }
-                this.major = major;
-    }
-
-    
 }

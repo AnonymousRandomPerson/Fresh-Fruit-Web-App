@@ -10,53 +10,62 @@
     </h:head>
     <h:body>
         <h:form>  
-            <center>
-            <p:panel id="panel" header="Fresh Fruit Home" style="text-align: center; width:30%">
-                <p:messages id="msgs" />
-                
-                            <p:outputLabel for="username" value="Username:" />
-                            <p:inputText id="username" value="#{ui.username}" 
-                                         label="Username">
-                            </p:inputText>
+                <p:panel id="panel" header="Fresh Fruit Profile Editor" style="margin: 0 auto; width:30%">
+                    <div align="center">
+                    <div align="right" style="display:inline-block">
+                        <p:messages id="msgs" />
 
-                            <p:message for="username" display="icon" />
-                            
-                            <p:outputLabel for="password" value="Password:" />
-                            <p:password id="password" value="#{ui.password}" 
-                                        label="Password">
-                            </p:password>
-                            
-                            <p:message for="password" display="Text" />
-                            
-                            <p:outputLabel for="major" value="Major" />
-                            <p:inputText id="major" value="#{ui.major}" 
-                                         label="Major">
-                            </p:inputText>
+                        <p:outputLabel for="username" value="Username:" />
+                        <p:inputText id="username" value="#{ui.username}" 
+                                     label="Username">
+                        </p:inputText>
 
-                            <p:message for="major" display="icon" />
-                            
-                            <p:outputLabel for="preferences" value="Preferences" />
-                            <p:inputText id="preferences" value="#{ui.preferences}" 
-                                         label="Preferences">
-                            </p:inputText>
+                        <p:message for="username" display="icon" />
 
-                            <p:message for="preferences" display="icon" />
-                            
-                            <p:outputLabel for="interest" value="Interest" />
-                            <p:inputText id="interest" value="#{ui.interest}" 
-                                         label="Interest">
-                            </p:inputText>
+                        <p:outputLabel for="password" value="Password:" />
+                        <p:password id="password" value="#{ui.password}" 
+                                    label="Password" redisplay="true">
+                        </p:password>
 
-                            <p:message for="interest" display="icon" />
+                        <p:message for="password" display="Text" />
 
+                        <p:outputLabel for="email" value="Email:" />
+                        <p:inputText id="email" value="#{ui.email}" 
+                                     label="Email">
+                        </p:inputText>
+                        
+                        <p:message for="email" display="icon" />
 
-                 <p:commandButton update="panel" value="Save Profile" action="#{ui.editProfile()}"
-                                 icon="ui-icon-disk"/>           
-                
-                 <p:commandButton update="panel" value="Cancel" action="#{ui.cancelHome()}" 
-                                 icon="ui-icon-closethick" />
-            </p:panel> 
-            </center>
+                        <p:outputLabel for="major" value="Major:" />
+                        <p:inputText id="major" value="#{ui.major}" 
+                                     label="Major">
+                        </p:inputText>
+
+                        <p:message for="major" display="icon" />
+
+                        <p:outputLabel for="preferences" value="Preferences:" />
+                        <p:inputText id="preferences" value="#{ui.preferences}" 
+                                     label="Preferences">
+                        </p:inputText>
+
+                        <p:message for="preferences" display="icon" />
+
+                        <p:outputLabel for="interest" value="Interest:" />
+                        <p:inputText id="interest" value="#{ui.interest}" 
+                                     label="Interest">
+                        </p:inputText>
+
+                        <p:message for="interest" display="icon" />
+                    </div>
+                    </div>
+                    <div align="center">
+                        <p:commandButton update="panel" value="Save Profile" action="#{ui.editProfile()}"
+                                         icon="ui-icon-disk"/>           
+
+                        <p:commandButton update="panel" value="Cancel" action="#{ui.cancelHome()}" 
+                                         icon="ui-icon-closethick" />
+                    </div>
+                </p:panel> 
         </h:form>
     </h:body>
 </html>

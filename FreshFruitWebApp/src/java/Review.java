@@ -1,9 +1,9 @@
 public class Review {
     private int starRating;
     private String textReview;
-    private User reviewer;
+    private StudentUser reviewer;
     
-    public Review(int starRating, String textReview, User reviewer) {
+    public Review(int starRating, String textReview, StudentUser reviewer) {
         this.starRating = starRating;
         this.textReview = textReview;
         this.reviewer = reviewer;

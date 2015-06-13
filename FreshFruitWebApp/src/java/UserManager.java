@@ -7,28 +7,43 @@ import javax.faces.bean.ApplicationScoped;
 @ApplicationScoped
 public class UserManager {
     
-private Map<String, User> userList = new HashMap<>();
+    private Map<String, User> userList = new HashMap<>();
     public static final int LIMITTRIES = 3;
-
+    
     /**
-     * Creates a new instance of UserManager
+     * Creates a new instance of UserManager.
      */
     public UserManager() {
     }
-    
 
     /**
-     * make a new user and put it in the map
-     * @param user
-     * @param pass 
+     * Makes a new user and puts it in the map.
+     * @param user the new user's username
+     * @param pass the new user's password
+     * @return the new user
      */
-    public void makeUser(String user, String pass) {
-        userList.put(user, new User(user, pass));
+    public User makeUser(String user, String pass) {
+        User newUser = new StudentUser(user, pass);
+        newUser.setUserManager(this);
+        userList.put(user, newUser);
+        return newUser;
     }
+    
     /**
-     * find a user in the map
-     * @param username
-     * @return the user object
+     * Changes a user's username in the hash map.
+     * @param oldName the user's old name
+     * @param newName the user's new name
+     */
+    public void changeUsername(String oldName, String newName) {
+        User user = find(oldName);
+        userList.put(newName, user);
+        userList.remove(oldName);
+    }
+    
+    /**
+     * Finds a user in the map.
+     * @param username the user to find
+     * @return the User object, or null if the user does not exist
      */
     public User find(String username) {
        return userList.get(username);
