@@ -3,7 +3,6 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import java.util.Calendar;
 
 @ManagedBean (name = "ui")
 @SessionScoped
@@ -19,8 +18,7 @@ public class UI {
     private String email;
     private String major;
     private String interest;
-    private String preferences; 
-    private Calendar dob;
+    private String preferences;
     
     public UI() {
     }
@@ -49,13 +47,6 @@ public class UI {
         return email;
     }
     
-    /**
-     * Gets the date of birth in the UI.
-     * @return the date of birth in the UI.
-     */
-    public Calendar getDob() {
-        return dob;
-    }
     /**
      * Gets the preferences in the UI.
      * @return the preferences in the UI
@@ -108,14 +99,6 @@ public class UI {
      */
     public void setMajor(String m) {
         major = m;
-    }
-    
-    /**
-     * Sets the date of birth in the UI
-     * @param dob the new date of birth in the UI.
-     */
-    public void setDob(Calendar dob) {
-        this.dob = dob;
     }
     
     /**
