@@ -65,7 +65,7 @@ public class MovieUI extends UI {
         } else if (query.equalsIgnoreCase("New DVDs")) {
             dvds();
         } else {
-            int limit = 5; //The number of results to show
+            int limit = 10; //The number of results to show
             String link = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=yedukp76ffytfuy24zsqk7f5&q="
                         + query.replaceAll("\\s", "+") + "&page_limit=" + limit;
             String callResult = getJsonData(link);
@@ -77,6 +77,7 @@ public class MovieUI extends UI {
             movies = new Movie[limit];
             Pattern titlePattern = Pattern.compile("title=(.+), year");
             Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
+            limit = Math.min(limit, jsonObjList.size());
             for (int i = 0; i < limit; i++) {
                 Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
                 titleMatch.find();
