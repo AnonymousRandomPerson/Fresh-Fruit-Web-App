@@ -155,6 +155,10 @@ public class MovieUI extends UI {
         }
         return "searchNewReleases";
     }
+    /**
+     * get new releases movies
+     * @return 
+     */
     public Movie[] getNewReleases() {
         return newReleases;
     }
@@ -187,7 +191,10 @@ public class MovieUI extends UI {
         return "searchNewDvd";
     }
     
-    
+    /**
+     * get new dvds
+     * @return 
+     */
     public Movie[] getNewDvd() {
         return newDvd;
     }
