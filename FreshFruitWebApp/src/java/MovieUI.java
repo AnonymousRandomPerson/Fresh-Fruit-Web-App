@@ -67,7 +67,7 @@ public class MovieUI extends UI {
         } else {
             int limit = 5; //The number of results to show
             String link = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=yedukp76ffytfuy24zsqk7f5&q="
-                        + query + "&page_limit=" + limit;
+                        + query.replaceAll("\\s", "+") + "&page_limit=" + limit;
             String callResult = getJsonData(link);
             JsonParser jsonParser = new JsonParser();
             JsonObject jo = (JsonObject)jsonParser.parse(callResult);
