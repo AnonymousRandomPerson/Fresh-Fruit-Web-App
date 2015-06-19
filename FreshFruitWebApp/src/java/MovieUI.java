@@ -132,9 +132,8 @@ public class MovieUI extends UI {
      */
     public String releases() {
         query = "New Releases";
-        int limit = 10; //The number of results to show
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/in_theaters.json?apikey=yedukp76ffytfuy24zsqk7f5&q="
-                    + query.replaceAll("\\s", "+") + "&page_limit=" + limit;
+        int limit = 10;
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?page_limit=10&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
         String callResult = getJsonData(link);
         JsonParser jsonParser = new JsonParser();
         JsonObject jo = (JsonObject)jsonParser.parse(callResult);
@@ -152,7 +151,7 @@ public class MovieUI extends UI {
             thumbnailMatch.find();
             newReleases[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1));
         }
-        return "search";
+        return "searchNewReleases";
     }
     public Movie[] getNewReleases() {
         return newReleases;
