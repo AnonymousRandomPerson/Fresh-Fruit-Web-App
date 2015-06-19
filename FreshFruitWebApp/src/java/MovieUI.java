@@ -31,6 +31,8 @@ public class MovieUI extends UI {
     private String query;
     
     private Movie[] newReleases;
+    
+    private Movie[] newDvd;
    
     public MovieUI() {
     }
@@ -161,7 +163,33 @@ public class MovieUI extends UI {
      * @return the search screen
      */
     public String dvds() {
-        query = "New DVDs";
-        return "search";
+        query = "New Dvds";
+        int limit = 10;
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?page_limit=10&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
+        String callResult = getJsonData(link);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jo = (JsonObject)jsonParser.parse(callResult);
+        JsonArray jsonArr = jo.getAsJsonArray("movies");
+        Gson googleJson = new Gson();
+        ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
+        newDvd = new Movie[limit];
+        Pattern titlePattern = Pattern.compile("title=(.+), year");
+        Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
+        limit = Math.min(limit, jsonObjList.size());
+        for (int i = 0; i < limit; i++) {
+            Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
+            titleMatch.find();
+            Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
+            thumbnailMatch.find();
+            newDvd[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1));
+        }
+        
+        return "searchNewDvd";
     }
-}
+    
+    
+    public Movie[] getNewDvd() {
+        return newDvd;
+    }
+}   
+

@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Fresh Fruit Home</title>
+        <title>Fresh Fruit Movie Search</title>
         
     </h:head>
     <h:body>
@@ -27,24 +27,22 @@
                                          icon="ui-icon-power" style="width:110px"/>
                     </div>
                 </p:panel> 
-                <p:panel id="panel" header="Fresh Fruit Home" style="text-align: center;">
+                <p:panel id="panel" header="Search Results" style="text-align: center;">
                     <p:inputText id="search" value="#{movieui.query}">
                     </p:inputText>
                     <p:commandButton update="panel" value="Search Movies" action="#{movieui.search()}"
                                      icon="ui-icon-search"/>
-                    <br></br>
-                    <br></br>
-                    <div align="left" style="display:inline-block">
-                        <p:commandButton update="panel" value="New Releases" action="#{movieui.releases()}"
-                                         icon="ui-icon-lightbulb" style="width:175px"/>
-                        <br></br>
-                        <p:commandButton update="panel" value="New Dvds" action="#{movieui.dvds()}"
-                                         icon="ui-icon-video" style="width:175px"/>
-                    </div>
+                    <h:dataTable var="var1" value="#{movieui.newDvd}">
+                        <h:column>
+                            <img src="#{var1.imagePath}"></img>
+                        </h:column>
+                        <h:column>
+                            <h:outputText value="#{var1.title}"  />
+                        </h:column>
+                    </h:dataTable>
                 </p:panel>
             </h:panelGrid>
             </div>
         </h:form>
     </h:body>
 </html>
-
