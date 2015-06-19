@@ -30,8 +30,8 @@ public class MovieUI extends UI {
     
     private String query;
     
-    private List<Movie> newReleases = new ArrayList<Movie>();
-    
+    private Movie[] newReleases;
+   
     public MovieUI() {
     }
     
@@ -132,11 +132,29 @@ public class MovieUI extends UI {
      */
     public String releases() {
         query = "New Releases";
-        String jsonData = getJsonData("http://api.rottentamatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=yedukp76ffytfuy24zsqk7f5?limit=20?country=us");
-        
+        int limit = 10; //The number of results to show
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/in_theaters.json?apikey=yedukp76ffytfuy24zsqk7f5&q="
+                    + query.replaceAll("\\s", "+") + "&page_limit=" + limit;
+        String callResult = getJsonData(link);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jo = (JsonObject)jsonParser.parse(callResult);
+        JsonArray jsonArr = jo.getAsJsonArray("movies");
+        Gson googleJson = new Gson();
+        ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
+        newReleases = new Movie[limit];
+        Pattern titlePattern = Pattern.compile("title=(.+), year");
+        Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
+        limit = Math.min(limit, jsonObjList.size());
+        for (int i = 0; i < limit; i++) {
+            Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
+            titleMatch.find();
+            Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
+            thumbnailMatch.find();
+            newReleases[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1));
+        }
         return "search";
     }
-    public List<Movie> getNewReleases() {
+    public Movie[] getNewReleases() {
         return newReleases;
     }
     /**
