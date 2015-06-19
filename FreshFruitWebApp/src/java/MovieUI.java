@@ -12,9 +12,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @ManagedBean (name = "movieui")
 @SessionScoped
@@ -58,8 +65,26 @@ public class MovieUI extends UI {
         } else if (query.equalsIgnoreCase("New DVDs")) {
             dvds();
         } else {
-            movies = new Movie[] {new Movie("Toy Story 2", "http://resizing.flixster.com/22gW_78MCw3LuSGJUBYmVIssDUo=/54x77/dkpu1ddg7pbsk.cloudfront.net/movie/10/93/63/10936392_ori.jpg"),
-                new Movie("Toy Story 3", "http://content6.flixster.com/movie/11/13/43/11134356_tmb.jpg")};
+            int limit = 5; //The number of results to show
+            String link = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=yedukp76ffytfuy24zsqk7f5&q="
+                        + query + "&page_limit=" + limit;
+            String callResult = getJsonData(link);
+            JsonParser jsonParser = new JsonParser();
+            JsonObject jo = (JsonObject)jsonParser.parse(callResult);
+            JsonArray jsonArr = jo.getAsJsonArray("movies");
+            Gson googleJson = new Gson();
+            ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
+            movies = new Movie[limit];
+            Pattern titlePattern = Pattern.compile("title=(.+), year");
+            Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
+            for (int i = 0; i < limit; i++) {
+                Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
+                titleMatch.find();
+                Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
+                thumbnailMatch.find();
+                movies[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1));
+            }
+
         }
         return "search";
     }
@@ -106,7 +131,6 @@ public class MovieUI extends UI {
      */
     public String releases() {
         query = "New Releases";
-        Gson gson = new Gson();
         String jsonData = getJsonData("http://api.rottentamatoes.com/api/public/v1.0/lists/movies/in_theaters.json?apikey=yedukp76ffytfuy24zsqk7f5?limit=20?country=us");
         
         return "search";
