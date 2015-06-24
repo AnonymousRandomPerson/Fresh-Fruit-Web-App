@@ -44,7 +44,10 @@ public class MovieUI extends UI {
     public String getQuery() {
         return query;
     }
-    
+    /**
+     * get movies
+     * @return 
+     */
     public Movie[] getMovies() {
         return movies;
     }
