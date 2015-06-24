@@ -48,6 +48,7 @@ public class ProfileUI extends UI {
     public String getPreferences() {
         return preferences;
     }
+    
     /**
      * Gets the major in the UI.
      * @return the major in the UI
@@ -55,6 +56,7 @@ public class ProfileUI extends UI {
     public String getMajor() {
         return major;
     }
+    
     /**
      * Gets the interests in the UI.
      * @return the interests in the UI
@@ -102,6 +104,7 @@ public class ProfileUI extends UI {
     public void setPreferences(String pref) {
          preferences = pref;
     }
+    
     /**
      * Sets the interests in the UI.
      * @param i the new interests in the UI
@@ -123,7 +126,7 @@ public class ProfileUI extends UI {
             context.addMessage(null, new FacesMessage("Username already exists."));
             return null;
         }
-        user = userManager.makeUser(username, password);
+        userManager.setUser(userManager.makeUser(username, password));
         context.addMessage(null, new FacesMessage("Registration successful."));
         return "home";
     }
@@ -138,7 +141,7 @@ public class ProfileUI extends UI {
             context.addMessage(null, new FacesMessage("No username entered."));
             return null;
         }
-        user = userManager.find(username);
+        User user = userManager.find(username);
         if (user == null) {
             context.addMessage(null, new FacesMessage("Username or password incorrect."));
         } else if (user.isLocked()) {
@@ -150,6 +153,7 @@ public class ProfileUI extends UI {
                 interest = ((StudentUser)user).getInterest();
                 preferences = ((StudentUser)user).getPreferences();
             }
+            userManager.setUser(user);
             return "home";
         } else {
             context.addMessage(null, new FacesMessage("Username or password incorrect."));
@@ -163,6 +167,7 @@ public class ProfileUI extends UI {
      */
     public String logout() {
         username = password = major = email = interest = preferences = "";
+        userManager.setUser(null);
         return "welcome";
     }
     
@@ -197,6 +202,7 @@ public class ProfileUI extends UI {
      */
     public String editProfile() {
         FacesContext context = FacesContext.getCurrentInstance();
+        User user = userManager.getUser();
         if (!user.getUsername().equals(username) && userManager.find(username) != null) {
             System.out.println(user.getUsername() + " " +  username);
             context.addMessage(null, new FacesMessage("Username is already taken."));

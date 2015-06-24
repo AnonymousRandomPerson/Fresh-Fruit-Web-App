@@ -9,8 +9,6 @@ public class UI {
     @ManagedProperty("#{userManager}")
     protected UserManager userManager;
     
-    protected User user;
-    
     public UI() {
     }
     

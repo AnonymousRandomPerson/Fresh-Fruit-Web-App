@@ -5,13 +5,13 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Fresh Fruit Movie Search</title>
-        
+        <title>Fresh Fruit Movie Search</title> 
+        <link rel="stylesheet" type="text/css" href="classes.css"/>
     </h:head>
     <h:body>
         <h:form>
             <div align="center">
-            <h:panelGrid columns="2">
+            <h:panelGrid columns="2" columnClasses="alignTop">
                 
                 <p:panel id="panel2" style="text-align: center;">
                     <div align="left">
@@ -32,12 +32,16 @@
                     </p:inputText>
                     <p:commandButton update="panel" value="Search Movies" action="#{movieui.search()}"
                                      icon="ui-icon-search"/>
-                    <h:dataTable var="var1" value="#{movieui.movies}">
+                    <h:dataTable var="movie" value="#{movieui.movies}">
                         <h:column>
-                            <img src="#{var1.imagePath}"></img>
+                            <h:commandLink action="#{movieui.movieDetails(movie)}">
+                                <p:graphicImage value="#{movie.imagePath}"/>
+                            </h:commandLink>
                         </h:column>
                         <h:column>
-                            <h:outputText value="#{var1.title}"  />
+                            <p:commandLink action="#{movieui.movieDetails(movie)}">
+                                <h:outputText value="#{movie.title}"/>
+                            </p:commandLink>
                         </h:column>
                     </h:dataTable>
                 </p:panel>

@@ -6,12 +6,12 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Fresh Fruit Home</title>
-        
+        <link rel="stylesheet" type="text/css" href="classes.css"/>
     </h:head>
     <h:body>
         <h:form>
             <div align="center">
-            <h:panelGrid columns="2">
+                <h:panelGrid columns="2" columnClasses="alignTop">
                 
                 <p:panel id="panel2" style="text-align: center;">
                     <div align="left">
@@ -38,8 +38,15 @@
                         <p:commandButton update="panel" value="New Releases" action="#{movieui.releases()}"
                                          icon="ui-icon-lightbulb" style="width:175px"/>
                         <br></br>
-                        <p:commandButton update="panel" value="New Dvds" action="#{movieui.dvds()}"
+                        <p:commandButton update="panel" value="New DVDs" action="#{movieui.dvds()}"
                                          icon="ui-icon-video" style="width:175px"/>
+                        <br></br>
+                        <p:commandButton update="panel" value="Top Rated" action="#{movieui.top()}"
+                                         icon="ui-icon-star" style="width:175px"/>
+                        <br></br>
+                        <p:commandButton update="panel" value="Recommended Movies" action="#{movieui.recommended()}"
+                                         icon="ui-icon-heart" style="width:175px"/>
+                        <br></br>
                     </div>
                 </p:panel>
             </h:panelGrid>

@@ -22,22 +22,74 @@ import com.google.gson.JsonParser;
 
 public class MovieLogic {
     
-    public static Movie[] findMovies(String search) {
-        
-        int limit = 50; //The number of results to show
+    /**
+     * The number of results to show.
+     */
+    public static final int limit = 50;
+    
+    /**
+     * Finds movies based on a search query.
+     * @param search the search query
+     * @return an array of movies matching the search query
+     */
+    public static Movie[] searchMovies(String search) {
         String link = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=yedukp76ffytfuy24zsqk7f5&q="
                     + search.replaceAll("\\s", "+") + "&page_limit=" + limit;
-        String callResult = getJsonData(link);
+        return findMovies(link);
+    }
+    
+    /**
+     * Finds the latest DVD movie releases.
+     * @return an array of new DVD releases
+     */
+    public static Movie[] getNewDvd(){
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?page_limit=" + limit + "&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
+        return findMovies(link);
+    }
+    
+    /**
+     * Finds recommended movies based on major.
+     * @param major the major to search for recommended movies from
+     * @return an array of recommended movies
+     */
+    public static Movie[] recommendMovies(String major) {
+        return new Movie[0];
+    }
+    
+    /**
+     * Finds the newest movie releases,
+     * @return an array of new movies
+     */
+    public static Movie[] getNewMovies() {
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?page_limit=" + limit + "&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
+        return findMovies(link);
+    }
+    
+    /**
+     * Finds the top rated movies.
+     * @return an array of top movies.
+     */
+    public static Movie[] getTopMovies() {
+        return new Movie[0];
+    }
+    
+    /**
+     * Gets movies from Rotten Tomatoes based on the query.
+     * @param query the URL to get the JSON from
+     * @return the movies matching the query
+     */
+    public static Movie[] findMovies(String query) {
+        String callResult = getJsonData(query);
         JsonParser jsonParser = new JsonParser();
         JsonObject jo = (JsonObject)jsonParser.parse(callResult);
         JsonArray jsonArr = jo.getAsJsonArray("movies");
         Gson googleJson = new Gson();
         ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
-        Movie[] movies = new Movie[limit];
         Pattern titlePattern = Pattern.compile("title=(.+), year");
         Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
-        limit = Math.min(limit, jsonObjList.size());
-        for (int i = 0; i < limit; i++) {
+        int numMovies = Math.min(limit, jsonObjList.size());
+        Movie[] movies = new Movie[numMovies];
+        for (int i = 0; i < numMovies; i++) {
             Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
             titleMatch.find();
             Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
@@ -47,65 +99,10 @@ public class MovieLogic {
         return movies;
     }
     
-    public static Movie[] getNewDvd(){
-        int limit = 10;
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?page_limit=10&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
-        String callResult = getJsonData(link);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jo = (JsonObject)jsonParser.parse(callResult);
-        JsonArray jsonArr = jo.getAsJsonArray("movies");
-        Gson googleJson = new Gson();
-        ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
-        Movie[] newDvd = new Movie[limit];
-        Pattern titlePattern = Pattern.compile("title=(.+), year");
-        Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
-        limit = Math.min(limit, jsonObjList.size());
-        for (int i = 0; i < limit; i++) {
-            Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
-            titleMatch.find();
-            Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
-            thumbnailMatch.find();
-            newDvd[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1));
-        }
-        return newDvd;
-    }
-    
-    public Movie[] recommendMovies() {
-        return null;
-    }
-    
-    public static Movie[] getNewMovies() {
-        String query = "New Releases";
-        int limit = 10;
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?page_limit=10&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
-        String callResult = getJsonData(link);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jo = (JsonObject)jsonParser.parse(callResult);
-        JsonArray jsonArr = jo.getAsJsonArray("movies");
-        Gson googleJson = new Gson();
-        ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
-        Movie[] newReleases = new Movie[limit];
-        Pattern titlePattern = Pattern.compile("title=(.+), year");
-        Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
-        limit = Math.min(limit, jsonObjList.size());
-        for (int i = 0; i < limit; i++) {
-            Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
-            titleMatch.find();
-            Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
-            thumbnailMatch.find();
-            newReleases[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1));
-        }
-        return newReleases;
-    }
-    
-    public Movie[] getTopMovies() {
-        return null;
-    }
-    
     /**
-     * get Json data from the API
-     * @param link 
-     * @return the json data
+     * Gets JSON data from the API
+     * @param link the URL to get the JSON from
+     * @return the JSON data
      */
     public static String getJsonData(String link) {
         URL url = null;
@@ -124,12 +121,12 @@ public class MovieLogic {
                 BufferedReader br = new BufferedReader(new InputStreamReader(
 			(conn.getInputStream())));
 		String output;
-		System.out.println("Output from Server .... \n");
+		//System.out.println("Output from Server .... \n");
 		while ((output = br.readLine()) != null) {
-			System.out.println(output);
+			//System.out.println(output);
                         jsonData+=output;
 		}
-                System.out.println("Got JSON: " + jsonData);
+                //System.out.println("Got JSON: " + jsonData);
 		conn.disconnect();
                 } catch (MalformedURLException ex) {
                    Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);

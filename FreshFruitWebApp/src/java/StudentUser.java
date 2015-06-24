@@ -4,9 +4,9 @@ public class StudentUser extends User {
         super(username, password);
     }
     
- /**
- * Status of the user
- */
+    /**
+    * Status of the user
+    */
     public enum Status {
         Normal, Locked, Banned
     }
@@ -17,88 +17,84 @@ public class StudentUser extends User {
     private Status status;
     private String preferences;
     
- /**
- * Gets the date of birth.
- * @return the date of birth
- */
+    /**
+    * Gets the date of birth.
+    * @return the date of birth
+    */
     public int[] getDob() {
         return dob;
     }
     
- /**
- * Gets major.
- * @return the major
- */
+    /**
+    * Gets major.
+    * @return the major
+    */
     public String getMajor() {
         return major;
     }
     
- /**
- * Gets interests.
- * @return the interests
- */
+    /**
+    * Gets interests.
+    * @return the interests
+    */
     public String getInterest() {
         return interest;
     }
     
-/**
- * Gets the status of the user.
- * @return the status of the user
- */
+    /**
+     * Gets the status of the user.
+     * @return the status of the user
+     */
     public Status getStatus() {
         return status;
     }
     
- /**
- * Gets preferences.
- * @return the preferences 
- */
+    /**
+    * Gets preferences.
+    * @return the preferences 
+    */
     public String getPreferences() {
         return preferences;
     }
     
-/**
- * Sets date of birth.
- * @param dob the new date of birth
- */
+    /**
+     * Sets date of birth.
+     * @param dob the new date of birth
+     */
     public void setDob(int[] dob) {
         this.dob = dob;
     }
     
-/**
- * Sets the major
- * @param major the new major
- */
+    /**
+     * Sets the major
+     * @param major the new major
+     */
     public void setMajor(String major) {
         this.major = major;
     }
     
-/**
- * Sets the interests.
- * @param interest the new user interests 
- */
+    /**
+     * Sets the interests.
+     * @param interest the new user interests 
+     */
     public void setInterest(String interest) {
         this.interest = interest;
     }
     
-/**
- * Sets the status.
- * @param status the new status
- */
+    /**
+     * Sets the status.
+     * @param status the new status
+     */
     public void setStatus(Status status) {
         this.status = status;
     }
     
- /**
- * Sets the user's preferences.
- * @param preferences the new preferences
- */
+    /**
+    * Sets the user's preferences.
+    * @param preferences the new preferences
+    */
     public void setPreferences(String preferences) {
         this.preferences = preferences;
-    }
-    
-    public void reviewMovie() {
-        
     }
 
     /**

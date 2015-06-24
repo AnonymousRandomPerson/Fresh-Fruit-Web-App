@@ -10,10 +10,28 @@ public class UserManager {
     private Map<String, User> userList = new HashMap<>();
     public static final int LIMITTRIES = 3;
     
+    private User currentUser;
+    
     /**
      * Creates a new instance of UserManager.
      */
     public UserManager() {
+    }
+    
+    /**
+     * Returns the current user of the application.
+     * @return the user of the application.
+     */
+    public User getUser() {
+        return currentUser;
+    }
+    
+    /**
+     * Sets the current application user.
+     * @param user the new user
+     */
+    public void setUser(User user) {
+        currentUser = user;
     }
 
     /**
