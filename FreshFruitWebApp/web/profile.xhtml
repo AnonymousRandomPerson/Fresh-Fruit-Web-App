@@ -36,10 +36,11 @@
 
                         <p:message for="email" display="icon" />
 
-                        <p:outputLabel for="major" value="Major:" />
-                        <p:inputText id="major" value="#{profileui.major}" 
-                                     label="Major">
-                        </p:inputText>
+                        <p:outputLabel for="major" value="Majors:" />
+                        <p:selectOneMenu id="major" value="#{profileui.major}" style="width:69%">
+                            <f:selectItem itemLabel="Select Major" itemValue="#{profileui.major}" noSelectionOption="true" />
+                            <f:selectItems value="#{profileui.majors}" />
+                        </p:selectOneMenu>
 
                         <p:message for="major" display="icon" />
 
