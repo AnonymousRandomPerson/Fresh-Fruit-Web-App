@@ -23,12 +23,17 @@ public class Movie {
         this.id = id;
     }
     
-    public Movie(String title, String genre, ArrayList<Review> reviews, Calendar releaseDate, String synopsis) {
+    public Movie(String title, String genre, ArrayList<Review> reviews, Calendar releaseDate, String synopsis, int id) {
         this.title = title;
         this.genre = genre;
         this.reviews = reviews;
         this.releaseDate = releaseDate;
         this.synopsis = synopsis;
+        this.id = id;
+    }
+    
+    public int getId(){
+        return id;
     }
     
     /**

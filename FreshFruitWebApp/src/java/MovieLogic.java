@@ -102,7 +102,6 @@ public class MovieLogic {
             thumbnailMatch.find();
             Matcher idMatch = idPattern.matcher(jsonObjList.get(i).toString());
             idMatch.find();
-            int test = Integer.parseInt(idMatch.group(1));
             movies[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1), Integer.parseInt(idMatch.group(1)));
         }
         return movies;

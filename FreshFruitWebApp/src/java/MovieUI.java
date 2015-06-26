@@ -131,9 +131,9 @@ public class MovieUI extends UI {
         return "search";
     }
     
-    public String similar(int id) {
+    public String similar(Movie mo) {
+        int id = mo.getId();
         movies = MovieLogic.getSimilarMovies(id);
-        query = "Similar";
         return "search";
     }
     /**

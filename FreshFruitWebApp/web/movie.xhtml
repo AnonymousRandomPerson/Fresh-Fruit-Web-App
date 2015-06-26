@@ -28,15 +28,13 @@
                                              icon="ui-icon-power" style="width:110px"/>
                         </div>
                     </p:panel> 
-                    <p:panel id="panel" header="#{movieui.movie.title}" style="text-align: center;">
+                    <p:panel id="panel" header="#{movieui.movie.title}" style="text-align: center; width: 400px">
                         <p:messages id="messages" autoUpdate="true"/>
-                        <div align="left">
+                        <div align="center">
                         <p:commandButton update="panel" value="Back" action="#{movieui.search()}"
-                                         icon="ui-icon-arrowreturnthick-1-w" style="width:90px"/>
-                        </div>
-                        <div align="left">
-                        <p:commandButton update="panel" value="Similar Movies" action="#{movieui.similar(movieui.movie.id)}"
-                                         icon="ui-icon-newwinthick-1-w" style="width:180px"/>
+                                         icon="ui-icon-arrowreturnthick-1-w" style="width:90px; height: 60px"/>
+                        <p:commandButton update="panel" value="Similar Movies" action="#{movieui.similar(movieui.movie)}"
+                                         icon="ui-icon-newwinthick-1-w" style="width:180px; height: 60px"/>
                         </div>
                         <br></br>
                         <img src="#{movieui.movie.imagePath}"></img>
