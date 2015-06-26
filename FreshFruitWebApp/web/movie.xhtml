@@ -34,6 +34,10 @@
                         <p:commandButton update="panel" value="Back" action="#{movieui.search()}"
                                          icon="ui-icon-arrowreturnthick-1-w" style="width:90px"/>
                         </div>
+                        <div align="left">
+                        <p:commandButton update="panel" value="Similar Movies" action="#{movieui.similar(movieui.movie.id)}"
+                                         icon="ui-icon-newwinthick-1-w" style="width:180px"/>
+                        </div>
                         <br></br>
                         <img src="#{movieui.movie.imagePath}"></img>
                         <br></br>
