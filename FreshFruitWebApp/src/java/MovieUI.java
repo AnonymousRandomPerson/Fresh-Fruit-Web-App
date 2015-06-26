@@ -15,6 +15,8 @@ public class MovieUI extends UI {
     private int rating;
     
     private String reviewText;
+    
+    private int id;
    
     public MovieUI() {
     }

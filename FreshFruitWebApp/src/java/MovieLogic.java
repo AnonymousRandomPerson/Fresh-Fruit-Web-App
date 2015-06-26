@@ -87,6 +87,7 @@ public class MovieLogic {
         ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
         Pattern titlePattern = Pattern.compile("title=(.+), year");
         Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
+        Pattern idPattern = Pattern.compile("id=(.+), title");
         int numMovies = Math.min(limit, jsonObjList.size());
         Movie[] movies = new Movie[numMovies];
         for (int i = 0; i < numMovies; i++) {
@@ -94,7 +95,10 @@ public class MovieLogic {
             titleMatch.find();
             Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
             thumbnailMatch.find();
-            movies[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1));
+            Matcher idMatch = idPattern.matcher(jsonObjList.get(i).toString());
+            idMatch.find();
+            int test = Integer.parseInt(idMatch.group(1));
+            movies[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1), Integer.parseInt(idMatch.group(1)));
         }
         return movies;
     }

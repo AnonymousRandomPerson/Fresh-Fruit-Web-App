@@ -10,8 +10,9 @@ public class Movie {
     private Calendar releaseDate;
     private String synopsis;
     private String imagePath;
+    private int id;
     
-    public Movie(String title, String imagePath) {
+    public Movie(String title, String imagePath, int id) {
         this.title = title;
         this.imagePath = imagePath;
         genre = "Something";
@@ -19,6 +20,7 @@ public class Movie {
         releaseDate = Calendar.getInstance();
         releaseDate.set(2000, Calendar.JANUARY, 1);
         synopsis = "Something else";
+        this.id = id;
     }
     
     public Movie(String title, String genre, ArrayList<Review> reviews, Calendar releaseDate, String synopsis) {
