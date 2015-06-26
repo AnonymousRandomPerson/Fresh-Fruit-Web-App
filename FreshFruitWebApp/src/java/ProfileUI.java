@@ -13,9 +13,12 @@ public class ProfileUI extends UI {
     private String username;
     private String password;
     private String email;
-    private String major;
+    private Major major;
     private String interest;
     private String preferences;
+    
+    private Map<String,Map<String,String>> data = new HashMap<String, Map<String,String>>();
+    private Map<String,String> majors;
     
     public ProfileUI() {
     }
@@ -56,8 +59,20 @@ public class ProfileUI extends UI {
      * Gets the major in the UI.
      * @return the major in the UI
      */
-    public String getMajor() {
+    public Major getMajor() {
         return major;
+    }
+    
+    /**
+     * Gets major string for dropdown menu.
+     * @return the major string
+     */
+    public String getMajorString() {
+        if (major == null) {
+            return Major.Un.name();
+        } else {
+            return major.name();
+        }
     }
     
     /**
@@ -96,8 +111,16 @@ public class ProfileUI extends UI {
      * Sets the major in the UI
      * @param m the new major in the UI
      */
-    public void setMajor(String m) {
+    public void setMajor(Major m) {
         major = m;
+    }
+    
+    /**
+     * Sets the major according the provided string.
+     * @param major the string to reverse lookup major from
+     */
+    public void setMajorString(String major) {
+        this.major = Major.valueOf(major);
     }
     
     /**
@@ -169,7 +192,8 @@ public class ProfileUI extends UI {
      * @return the welcome page
      */
     public String logout() {
-        username = password = major = email = interest = preferences = "";
+        username = password = email = interest = preferences = "";
+        major = null;
         userManager.setUser(null);
         return "welcome";
     }
@@ -216,31 +240,9 @@ public class ProfileUI extends UI {
         return "home";
     }
     
-    private Map<String,Map<String,String>> data = new HashMap<String, Map<String,String>>();
-    private Map<String,String> majors;
-    
-    public enum Major {
-        AE("Aerospace Engineering"),
-        ARCH("Architecture"),
-        BME("Biomedical Engineering"),
-        ChemE("Chemical Engineering"),
-        Chem("Chemistry"),
-        CM("Computational Media"),
-        CS("Computer Science"),
-        EE("Electrical Engineering"),
-        ISYE("Industrial and Systems Engineering"),
-        Math("Mathematics"),
-        MGT("Management"),
-        ME("Mechanical Engineering"),
-        Phys("Physics");
-        
-        public String fullName;
-        
-        private Major(String name) {
-            fullName = name;
-        }
-    }
-     
+    /**
+     * make a HashMap that maps fullname to name 
+     */
     @PostConstruct
     public void init() {
         majors = new HashMap<String, String>();
@@ -248,11 +250,19 @@ public class ProfileUI extends UI {
             majors.put(m.fullName, m.name());
         }
     }
- 
+    
+    /**
+     * Major Hashmap
+     * @return data the data of the Hash map
+     */
     public Map<String, Map<String, String>> getData() {
         return data;
     }
- 
+    
+   /**
+     * Major Hashmap
+     * @return majors the map of majors 
+     */
     public Map<String, String> getMajors() {
         return majors;
     }

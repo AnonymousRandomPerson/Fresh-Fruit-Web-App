@@ -52,7 +52,7 @@ public class MovieLogic {
      * @param major the major to search for recommended movies from
      * @return an array of recommended movies
      */
-    public static Movie[] recommendMovies(String major) {
+    public static Movie[] recommendMovies(Major major) {
         return new Movie[0];
     }
     

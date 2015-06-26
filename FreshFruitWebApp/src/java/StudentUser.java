@@ -2,6 +2,7 @@ public class StudentUser extends User {
 
     public StudentUser(String username, String password) {
         super(username, password);
+        major = Major.Un;
     }
     
     /**
@@ -12,7 +13,7 @@ public class StudentUser extends User {
     }
     
     private int[] dob;
-    private String major;
+    private Major major;
     private String interest;
     private Status status;
     private String preferences;
@@ -29,7 +30,7 @@ public class StudentUser extends User {
     * Gets major.
     * @return the major
     */
-    public String getMajor() {
+    public Major getMajor() {
         return major;
     }
     
@@ -69,7 +70,7 @@ public class StudentUser extends User {
      * Sets the major
      * @param major the new major
      */
-    public void setMajor(String major) {
+    public void setMajor(Major major) {
         this.major = major;
     }
     
@@ -106,7 +107,7 @@ public class StudentUser extends User {
      * @param preferences the user's new preferences
      * @param interest the user's new interests
      */
-    public void editProfile(String user, String pass, String email, String major, String preferences, String interest) {
+    public void editProfile(String user, String pass, String email, Major major, String preferences, String interest) {
         if (!username.equals(user)) {
             userManager.changeUsername(username, user);
         }

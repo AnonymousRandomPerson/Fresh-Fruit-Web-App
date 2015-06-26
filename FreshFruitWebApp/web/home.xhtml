@@ -28,6 +28,7 @@
                     </div>
                 </p:panel> 
                 <p:panel id="panel" header="Fresh Fruit Home" style="text-align: center;">
+                    <p:messages id="messages" autoUpdate="true"/>
                     <p:inputText id="search" value="#{movieui.query}">
                     </p:inputText>
                     <p:commandButton update="panel" value="Search Movies" action="#{movieui.search()}"

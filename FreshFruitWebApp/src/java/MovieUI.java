@@ -142,9 +142,15 @@ public class MovieUI extends UI {
      */
     public String recommended() {
         StudentUser user = (StudentUser)userManager.getUser();
-        movies = MovieLogic.recommendMovies(user.getMajor());
-        query = "Recommended Movies";
-        return "search";
+        if (user.getMajor() == Major.Un) {
+            FacesContext context = FacesContext.getCurrentInstance();
+            context.addMessage(null, new FacesMessage("You need to have decided a major to be recommended movies."));
+            return null;
+        } else {
+            movies = MovieLogic.recommendMovies(user.getMajor());
+            query = "Recommended Movies";
+            return "search";
+        }
     }
     
     /**
