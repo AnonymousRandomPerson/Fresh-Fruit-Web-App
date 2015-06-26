@@ -131,6 +131,11 @@ public class MovieUI extends UI {
         return "search";
     }
     
+    public String similar(int id) {
+        movies = MovieLogic.getSimilarMovies(id);
+        query = "Similar";
+        return "search";
+    }
     /**
      * Gets the recommended movies for the user's major.
      * @return an array of recommended movies

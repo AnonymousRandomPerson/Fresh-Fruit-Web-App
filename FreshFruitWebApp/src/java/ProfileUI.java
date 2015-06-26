@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -211,5 +214,46 @@ public class ProfileUI extends UI {
             ((StudentUser)user).editProfile(username, password, email, major, preferences, interest);
         }
         return "home";
+    }
+    
+    private Map<String,Map<String,String>> data = new HashMap<String, Map<String,String>>();
+    private Map<String,String> majors;
+    
+    public enum Major {
+        AE("Aerospace Engineering"),
+        ARCH("Architecture"),
+        BME("Biomedical Engineering"),
+        ChemE("Chemical Engineering"),
+        Chem("Chemistry"),
+        CM("Computational Media"),
+        CS("Computer Science"),
+        EE("Electrical Engineering"),
+        ISYE("Industrial and Systems Engineering"),
+        Math("Mathematics"),
+        MGT("Management"),
+        ME("Mechanical Engineering"),
+        Phys("Physics");
+        
+        public String fullName;
+        
+        private Major(String name) {
+            fullName = name;
+        }
+    }
+     
+    @PostConstruct
+    public void init() {
+        majors = new HashMap<String, String>();
+        for (Major m : Major.values()) {
+            majors.put(m.fullName, m.name());
+        }
+    }
+ 
+    public Map<String, Map<String, String>> getData() {
+        return data;
+    }
+ 
+    public Map<String, String> getMajors() {
+        return majors;
     }
 }

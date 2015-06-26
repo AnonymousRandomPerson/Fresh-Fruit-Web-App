@@ -70,9 +70,14 @@ public class MovieLogic {
      * @return an array of top movies.
      */
     public static Movie[] getTopMovies() {
-        return new Movie[0];
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?limit=" + limit + "&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
+        return findMovies(link);
     }
     
+    public static Movie[] getSimilarMovies(int id) {
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + "/similar.json?limit=5&apikey=yedukp76ffytfuy24zsqk7f5";
+        return findMovies(link);
+    }
     /**
      * Gets movies from Rotten Tomatoes based on the query.
      * @param query the URL to get the JSON from
