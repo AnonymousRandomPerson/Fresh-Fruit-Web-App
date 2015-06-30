@@ -1,3 +1,8 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
 import java.util.HashMap;
 import java.util.Map;
 import javax.faces.bean.ManagedBean;
@@ -11,6 +16,14 @@ public class UserManager {
     public static final int LIMITTRIES = 3;
     
     private User currentUser;
+    
+    private String host = "jdbc:derby://localhost:1527/fruit";
+    private String uName = "team11";
+    private String uPass= "fruit";
+
+        
+ 
+    
     
     /**
      * Creates a new instance of UserManager.
@@ -44,6 +57,17 @@ public class UserManager {
         User newUser = new StudentUser(user, pass);
         newUser.setUserManager(this);
         userList.put(user, newUser);
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "INSERT INTO USERS (USERNAME, PASSWORD)"
+                    + "VALUES (\'" + user + "\',\'" + pass + "\')";
+            stmt.executeUpdate( SQL );
+        }
+        catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        
         return newUser;
     }
     
@@ -56,6 +80,16 @@ public class UserManager {
         User user = find(oldName);
         userList.put(newName, user);
         userList.remove(oldName);
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "UPDATE USERS"
+                    + " SET USERNAME=\'" + newName + "\' WHERE USERNAME=\'" + oldName + "\'";
+            stmt.executeUpdate( SQL );
+        }
+        catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
     }
     
     /**
@@ -64,6 +98,25 @@ public class UserManager {
      * @return the User object, or null if the user does not exist
      */
     public User find(String username) {
-       return userList.get(username);
+        if (userList.get(username) != null) {
+            return userList.get(username);
+        }
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "SELECT USERNAME,PASSWORD FROM USERS WHERE USERNAME=\'" + username + "\'";
+            boolean result = stmt.execute( SQL );
+            ResultSet rs = stmt.executeQuery( SQL );
+            if (result) {
+                User newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
+                newUser.setUserManager(this);
+                userList.put(rs.getString("USERNAME"), newUser);
+                return newUser;
+            }
+        }
+        catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+    return null;
     }
 }

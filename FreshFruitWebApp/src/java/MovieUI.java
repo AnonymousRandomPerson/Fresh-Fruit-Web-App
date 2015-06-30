@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -17,6 +21,10 @@ public class MovieUI extends UI {
     private String reviewText;
     
     private int id;
+    
+    private String host = "jdbc:derby://localhost:1527/fruit";
+    private String uName = "team11";
+    private String uPass= "fruit";
    
     public MovieUI() {
     }
@@ -178,6 +186,16 @@ public class MovieUI extends UI {
         StudentUser user = (StudentUser)userManager.getUser();
         if (movie != null) {
             movie.addReview(new Review(rating, reviewText, user));
+            try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWERMAJOR)"
+                    + "VALUES ()";
+            stmt.executeUpdate( SQL );
+        }
+        catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
             rating = 5;
             reviewText = "";
             context.addMessage(null, new FacesMessage("Your review has been submitted."));

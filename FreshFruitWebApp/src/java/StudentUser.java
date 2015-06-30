@@ -1,4 +1,14 @@
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
 public class StudentUser extends User {
+    
+    private String host = "jdbc:derby://localhost:1527/fruit";
+    private String uName = "team11";
+    private String uPass= "fruit";
 
     public StudentUser(String username, String password) {
         super(username, password);
@@ -117,5 +127,15 @@ public class StudentUser extends User {
         this.major = major;
         this.preferences = preferences;
         this.interest = interest;
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "UPDATE USERS"
+                    + " SET PASSWORD=\'" + pass + "\', EMAIL=\'" + email + "\', MAJOR=\'" + major + "\', PREFERENCES=\'" + preferences + "\', INTEREST=\'" + interest + "\' WHERE USERNAME=\'" + user + "\'";
+            stmt.executeUpdate( SQL );
+        }
+        catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
     }
 }
