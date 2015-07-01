@@ -9,7 +9,7 @@ import javax.faces.context.FacesContext;
 @ManagedBean (name = "profileui")
 @SessionScoped
 public class ProfileUI extends UI {
-    
+         
     private String username;
     private String password;
     private String email;

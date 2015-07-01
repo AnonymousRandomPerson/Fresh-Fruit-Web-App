@@ -15,6 +15,9 @@ public class User implements Serializable {
     protected String username;
     protected String password;
     protected String email;
+    protected Major major;
+    protected String preferences;
+    protected String interest;
     protected int numTries;
     
     /**
@@ -40,6 +43,18 @@ public class User implements Serializable {
         return email;
     }
     
+    public Major getMajor() {
+        return major;
+    }
+
+    public String getPreferences() {
+        return preferences;
+    }
+    
+    public String getInterest() {
+        return interest;
+    }
+    
     public void setUsername(String u) {
         username = u;
     }
@@ -51,6 +66,19 @@ public class User implements Serializable {
     public void setEmail(String e) {
         email = e;
     }
+    
+    public void setMajor(Major m) {
+        major = m;
+    }
+    
+    public void setPreferences(String p) {
+        preferences = p;
+    }
+    
+    public void setInterest(String i) {
+        interest = i;
+    }
+    
     /**
      * Checks the login information.
      * @param p the attempted password

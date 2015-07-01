@@ -104,12 +104,15 @@ public class UserManager {
         try {
             Connection con = DriverManager.getConnection(host, uName, uPass);
             Statement stmt = con.createStatement();
-            String SQL = "SELECT USERNAME,PASSWORD FROM USERS WHERE USERNAME=\'" + username + "\'";
-            boolean result = stmt.execute( SQL );
+            String SQL = "SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST FROM USERS WHERE USERNAME=\'" + username + "\'";
             ResultSet rs = stmt.executeQuery( SQL );
-            if (result) {
+            if (rs.next()) {
                 User newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
                 newUser.setUserManager(this);
+                newUser.setEmail(rs.getString("EMAIL"));
+                newUser.setMajor(Major.valueOf(rs.getString("MAJOR")));
+                newUser.setPreferences(rs.getString("PREFERENCES"));
+                newUser.setInterest(rs.getString("INTEREST"));
                 userList.put(rs.getString("USERNAME"), newUser);
                 return newUser;
             }

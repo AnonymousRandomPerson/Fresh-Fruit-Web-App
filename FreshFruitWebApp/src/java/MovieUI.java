@@ -189,9 +189,9 @@ public class MovieUI extends UI {
             try {
             Connection con = DriverManager.getConnection(host, uName, uPass);
             Statement stmt = con.createStatement();
-            String SQL = "INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWERMAJOR)"
-                    + "VALUES ()";
-            stmt.executeUpdate( SQL );
+            String SQL = "INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWMAJOR) "
+                    + "VALUES ('" + movie.getId() + "', " + rating + ",'" + reviewText + "','" + user.getMajor() + "')";
+            stmt.executeUpdate(SQL);
         }
         catch (SQLException err) {
             System.out.println(err.getMessage());
