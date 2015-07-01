@@ -4,18 +4,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A movie and its details.
  */
 public class Movie {
     private String title;
-    private String genre;
     private List<Review> reviews;
-    private Calendar releaseDate;
+    private String releaseDate;
     private String synopsis;
     private String imagePath;
     private int id;
@@ -23,11 +20,18 @@ public class Movie {
     public Movie(String title, String imagePath, int id) {
         this.title = title;
         this.imagePath = imagePath;
-        genre = "Something";
         reviews = new ArrayList<>();
-        releaseDate = Calendar.getInstance();
-        releaseDate.set(2000, Calendar.JANUARY, 1);
+        releaseDate = "2000-01-01";
         synopsis = "Something else";
+        this.id = id;
+    }
+    
+    public Movie(String title, String imagePath, String releaseDate, String synopsis, int id) {
+        this.title = title;
+        this.imagePath = imagePath;
+        reviews = new ArrayList<>();
+        this.releaseDate = releaseDate;
+        this.synopsis = synopsis;
         this.id = id;
         
         try {
@@ -43,15 +47,6 @@ public class Movie {
         catch (SQLException err) {
             err.printStackTrace();
         }
-    }
-    
-    public Movie(String title, String genre, ArrayList<Review> reviews, Calendar releaseDate, String synopsis, int id) {
-        this.title = title;
-        this.genre = genre;
-        this.reviews = reviews;
-        this.releaseDate = releaseDate;
-        this.synopsis = synopsis;
-        this.id = id;
     }
     
     /**
@@ -79,21 +74,11 @@ public class Movie {
     }
     
     /**
-     * Returns the movie's genre.
-     * @return the movie's genre
-     */
-    public String getGenre() {
-        return genre;
-    }
-    
-    /**
      * Returns the movie's release date.
      * @return the movie's release date
      */
     public String getReleaseDate() {
-        return releaseDate.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.US) + " " + 
-                releaseDate.get(Calendar.DAY_OF_MONTH) + ", " +
-                releaseDate.get(Calendar.YEAR);
+        return releaseDate;
     }
     
     /**

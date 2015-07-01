@@ -92,12 +92,15 @@ public class MovieLogic {
             });
             Movie[] movies = new Movie[ids.size()];
             for (int i = 0; i < ids.size(); i++) {
-                movies[i] = getMovieById(averages[i][1]);
+                Movie movie = getMovieById(averages[i][1]);
+                if (movie != null) {
+                    movies[i] = movie;
+                }
             }
             return movies;
         }
         catch (SQLException err) {
-            err.printStackTrace();
+            //err.printStackTrace();
         }
         return null;
     }
@@ -111,11 +114,22 @@ public class MovieLogic {
         String callResult = getJsonData(link);
         Pattern titlePattern = Pattern.compile("\"title\":\"(.+)\",\"year");
         Pattern thumbnailPattern = Pattern.compile("\"thumbnail\":\"(.+)\",\"profile");
+        Pattern synopsisPattern = Pattern.compile("\"synopsis\":\"(.+)\",\"posters");
+        Pattern releasePattern = Pattern.compile("\"theater\":\"(.+)\"},\"ratings");
         Matcher titleMatch = titlePattern.matcher(callResult);
         titleMatch.find();
         Matcher thumbnailMatch = thumbnailPattern.matcher(callResult);
         thumbnailMatch.find();
-        return new Movie(titleMatch.group(1), thumbnailMatch.group(1), id);
+        Matcher synopsisMatch = synopsisPattern.matcher(callResult);
+        synopsisMatch.find();
+        Matcher releaseMatch = releasePattern.matcher(callResult);
+        releaseMatch.find();
+        try {
+            return new Movie(titleMatch.group(1), thumbnailMatch.group(1), "IDK", synopsisMatch.group(1), id);
+        } catch (IllegalStateException e) {
+            //e.printStackTrace();
+            return null;
+        }
     }
     
     /**
@@ -160,6 +174,8 @@ public class MovieLogic {
         Pattern titlePattern = Pattern.compile("title=(.+), year");
         Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
         Pattern idPattern = Pattern.compile("id=(.+), title");
+        Pattern synopsisPattern = Pattern.compile("synopsis=(.+), posters");
+        Pattern releasePattern = Pattern.compile("theater=(.+)}, ratings");
         int numMovies = Math.min(limit, jsonObjList.size());
         Movie[] movies = new Movie[numMovies];
         for (int i = 0; i < numMovies; i++) {
@@ -169,7 +185,15 @@ public class MovieLogic {
             thumbnailMatch.find();
             Matcher idMatch = idPattern.matcher(jsonObjList.get(i).toString());
             idMatch.find();
-            movies[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1), Integer.parseInt(idMatch.group(1)));
+            Matcher synopsisMatch = synopsisPattern.matcher(jsonObjList.get(i).toString());
+            synopsisMatch.find();
+            Matcher releaseMatch = releasePattern.matcher(jsonObjList.get(i).toString());
+            releaseMatch.find();
+            try {
+                movies[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1), "IDK", synopsisMatch.group(1), Integer.parseInt(idMatch.group(1)));
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
         }
         return movies;
     }
