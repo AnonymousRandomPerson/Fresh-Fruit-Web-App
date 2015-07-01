@@ -18,6 +18,11 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 
 public class MovieLogic {
@@ -26,6 +31,9 @@ public class MovieLogic {
      * The number of results to show.
      */
     public static final int limit = 50;
+    private static final String host = "jdbc:derby://localhost:1527/fruit";
+    private static final String uName = "team11";
+    private static final String uPass= "fruit";
     
     /**
      * Finds movies based on a search query.
@@ -53,7 +61,61 @@ public class MovieLogic {
      * @return an array of recommended movies
      */
     public static Movie[] recommendMovies(Major major) {
-        return new Movie[0];
+        ArrayList ids = new ArrayList();
+        ArrayList totals = new ArrayList();
+        ArrayList reviewCount = new ArrayList();
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "SELECT MOVIEID,STARRATING FROM REVIEWS WHERE REVIEWMAJOR=\'" + major + "\'";
+            ResultSet rs = stmt.executeQuery( SQL );
+            while (rs.next()) {
+                int testID = Integer.parseInt(rs.getString("MOVIEID"));
+                if (ids.contains(testID)) {
+                    totals.set(ids.indexOf(testID), Integer.parseInt(rs.getString("STARRATING")) + (int) totals.get(ids.indexOf(testID)));
+                    reviewCount.set(ids.indexOf(testID), 1 + (int) reviewCount.get(ids.indexOf(testID)));
+                } else {
+                    ids.add(testID);
+                    totals.add(Integer.parseInt(rs.getString("STARRATING")));
+                    reviewCount.add(1);
+                }
+            }
+            int[][] averages = new int[ids.size()][2];
+            for (int i = 0; i < ids.size(); i++) {
+                averages[i][0] = (int) totals.get(i) / (int) reviewCount.get(i);
+                averages[i][1] = (int) ids.get(i);
+            }
+            java.util.Arrays.sort(averages, new java.util.Comparator<int[]>() {
+                public int compare(int[] a, int[] b) {
+                return Double.compare(b[0], a[0]);
+                }
+            });
+            Movie[] movies = new Movie[ids.size()];
+            for (int i = 0; i < ids.size(); i++) {
+                movies[i] = getMovieById(averages[i][1]);
+            }
+            return movies;
+        }
+        catch (SQLException err) {
+            System.out.println(err.getMessage());
+        }
+        return null;
+    }
+    
+    /**
+     * Takes an id number and returns the movie object
+     * @return the movie corresponding to the number
+     */
+    public static Movie getMovieById(int id) {
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + ".json?apikey=yedukp76ffytfuy24zsqk7f5";
+        String callResult = getJsonData(link);
+        Pattern titlePattern = Pattern.compile("\"title\":\"(.+)\",\"year");
+        Pattern thumbnailPattern = Pattern.compile("\"thumbnail\":\"(.+)\",\"profile");
+        Matcher titleMatch = titlePattern.matcher(callResult);
+        titleMatch.find();
+        Matcher thumbnailMatch = thumbnailPattern.matcher(callResult);
+        thumbnailMatch.find();
+        return new Movie(titleMatch.group(1), thumbnailMatch.group(1), id);
     }
     
     /**

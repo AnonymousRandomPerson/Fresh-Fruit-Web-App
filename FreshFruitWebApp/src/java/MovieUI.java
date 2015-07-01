@@ -212,4 +212,3 @@ public class MovieUI extends UI {
         return rating < position ? "StarEmpty.png" : "StarFilled.png";
     }
 }   
-
