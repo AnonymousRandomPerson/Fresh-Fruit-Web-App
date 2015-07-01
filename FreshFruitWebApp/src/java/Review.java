@@ -1,3 +1,6 @@
+/**
+ * A movie review and its details.
+ */
 public class Review {
     private int starRating;
     private String textReview;

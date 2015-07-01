@@ -8,6 +8,9 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean (name = "profileui")
 @SessionScoped
+/**
+ * UI logic dealing with user profile and login/registration.
+ */
 public class ProfileUI extends UI {
          
     private String username;

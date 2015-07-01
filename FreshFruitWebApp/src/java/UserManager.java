@@ -10,6 +10,9 @@ import javax.faces.bean.ApplicationScoped;
 
 @ManagedBean (name = "userManager")
 @ApplicationScoped
+/**
+ * Manages all users in the system.
+ */
 public class UserManager {
     
     private Map<String, User> userList = new HashMap<>();
@@ -17,13 +20,9 @@ public class UserManager {
     
     private User currentUser;
     
-    private String host = "jdbc:derby://localhost:1527/fruit";
-    private String uName = "team11";
-    private String uPass= "fruit";
-
-        
- 
-    
+    private static final String host = "jdbc:derby://localhost:1527/fruit";
+    private static final String uName = "team11";
+    private static final String uPass= "fruit";
     
     /**
      * Creates a new instance of UserManager.
@@ -65,7 +64,7 @@ public class UserManager {
             stmt.executeUpdate( SQL );
         }
         catch (SQLException err) {
-            System.out.println(err.getMessage());
+            err.printStackTrace();
         }
         
         return newUser;
@@ -88,7 +87,7 @@ public class UserManager {
             stmt.executeUpdate( SQL );
         }
         catch (SQLException err) {
-            System.out.println(err.getMessage());
+            err.printStackTrace();
         }
     }
     
@@ -107,7 +106,7 @@ public class UserManager {
             String SQL = "SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST FROM USERS WHERE USERNAME=\'" + username + "\'";
             ResultSet rs = stmt.executeQuery( SQL );
             if (rs.next()) {
-                User newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
+                StudentUser newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
                 newUser.setUserManager(this);
                 newUser.setEmail(rs.getString("EMAIL"));
                 newUser.setMajor(Major.valueOf(rs.getString("MAJOR")));
@@ -118,8 +117,33 @@ public class UserManager {
             }
         }
         catch (SQLException err) {
-            System.out.println(err.getMessage());
+            err.printStackTrace();
         }
     return null;
+    }
+    
+    /**
+     * Finds a user by his/her unique id in the database.
+     * @param id the id to find a user for
+     * @return the user with the id, or null if no user is found
+     */
+    public static User find(int id) {
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST FROM USERS WHERE USERID=" + id;
+            ResultSet rs = stmt.executeQuery( SQL );
+            if (rs.next()) {
+                StudentUser newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
+                newUser.setEmail(rs.getString("EMAIL"));
+                newUser.setMajor(Major.valueOf(rs.getString("MAJOR")));
+                newUser.setPreferences(rs.getString("PREFERENCES"));
+                newUser.setInterest(rs.getString("INTEREST"));
+                return newUser;
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        return null;
     }
 }

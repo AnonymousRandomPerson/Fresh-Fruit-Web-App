@@ -5,7 +5,7 @@
  */
 
 /**
- *
+ * An enum representing valid majors.
  * @author Greg
  */
 public enum Major {
@@ -26,24 +26,37 @@ public enum Major {
 
     public String fullName;
 
-/**
- * set major method.
- * @param name is the name of the major 
- */
+    /**
+     * Sets major.
+     * @param name the name of the major 
+     */
     private Major(String name) {
         fullName = name;
     }
+    
     /**
- * set major method.
- * @param fullname get the name of major
- */
-
+     * Returns the full name of the major.
+     * @return the full name of the major
+     */
+    public String getFullName() {
+        return fullName;
+    }
+    
+    /**
+    * Gets Major enum from a full name string.
+    * @param fullName get the name of major
+    * @return the Major enum corresponding to the string, or 
+    */
     public static Major getMajorFromString(String fullName) {
-        for (Major m : Major.values()) {
-            if (m.fullName.equals(fullName)) {
-                return m;
+        try {
+            for (Major m : Major.values()) {
+                if (m.fullName.equals(fullName)) {
+                    return m;
+                }
             }
+        } catch (IllegalArgumentException e) {
+            return Major.Un;
         }
-        return null;
+        return Major.Un;
     }
 }

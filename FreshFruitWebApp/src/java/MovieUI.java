@@ -1,5 +1,6 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.faces.application.FacesMessage;
@@ -9,6 +10,9 @@ import javax.faces.context.FacesContext;
 
 @ManagedBean (name = "movieui")
 @SessionScoped
+/**
+ * UI logic dealing with movie navigation and searching.
+ */
 public class MovieUI extends UI {
     private Movie[] movies;
     
@@ -139,6 +143,11 @@ public class MovieUI extends UI {
         return "search";
     }
     
+    /**
+     * Finds movies similar to the movie being looked at.
+     * @param mo the movie to find similar movies for
+     * @return the search screen
+     */
     public String similar(Movie mo) {
         int id = mo.getId();
         movies = MovieLogic.getSimilarMovies(id);
@@ -187,18 +196,24 @@ public class MovieUI extends UI {
         if (movie != null) {
             movie.addReview(new Review(rating, reviewText, user));
             try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWMAJOR) "
-                    + "VALUES ('" + movie.getId() + "', " + rating + ",'" + reviewText + "','" + user.getMajor() + "')";
-            stmt.executeUpdate(SQL);
-        }
-        catch (SQLException err) {
-            System.out.println(err.getMessage());
-        }
+                Connection con = DriverManager.getConnection(host, uName, uPass);
+                Statement stmt = con.createStatement();
+                String SQL = "SELECT USERID FROM USERS WHERE USERNAME = '" + user.getUsername() + "'";
+                ResultSet rs = stmt.executeQuery(SQL);
+                int userID = -1;
+                if (rs.next()) {
+                    userID = rs.getInt("USERID");
+                }
+
+                SQL = "INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWMAJOR, USERID) "
+                        + "VALUES ('" + movie.getId() + "', " + rating + ",'" + reviewText + "','" + user.getMajor() + "'," + userID + ")";
+                stmt.executeUpdate(SQL);
+                context.addMessage(null, new FacesMessage("Your review has been submitted."));
+            } catch (SQLException err) {
+                err.printStackTrace();
+            }
             rating = 5;
             reviewText = "";
-            context.addMessage(null, new FacesMessage("Your review has been submitted."));
         }
         return "home";
     }

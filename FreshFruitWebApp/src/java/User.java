@@ -7,6 +7,9 @@ import javax.faces.bean.SessionScoped;
 
 @ManagedBean
 @SessionScoped
+/**
+ * A generic user. Can be either a StudentUser or an AdminUser.
+ */
 public class User implements Serializable {
     
     @ManagedProperty("#{userManager}")
@@ -15,9 +18,6 @@ public class User implements Serializable {
     protected String username;
     protected String password;
     protected String email;
-    protected Major major;
-    protected String preferences;
-    protected String interest;
     protected int numTries;
     
     /**
@@ -31,52 +31,52 @@ public class User implements Serializable {
         numTries = 0;
     }
     
+    /**
+     * Returns the user's username.
+     * @return the user's username
+     */
     public String getUsername() { 
         return username;
     }
     
+    /**
+     * Returns the user's password.
+     * @return the user's password
+     */
     public String getPassword() {
         return password;
     }
     
+    /**
+     * Returns the user's email address.
+     * @return the user's email address
+     */
     public String getEmail() {
         return email;
     }
     
-    public Major getMajor() {
-        return major;
-    }
-
-    public String getPreferences() {
-        return preferences;
-    }
-    
-    public String getInterest() {
-        return interest;
-    }
-    
+    /**
+     * Sets the user's username.
+     * @param u the new username
+     */
     public void setUsername(String u) {
         username = u;
     }
     
+    /**
+     * Sets the user's password.
+     * @param p the new password
+     */
     public void setPassword(String p) {
         password = p;
     }
     
+    /**
+     * Sets the user's email address.
+     * @param e the new email address
+     */
     public void setEmail(String e) {
         email = e;
-    }
-    
-    public void setMajor(Major m) {
-        major = m;
-    }
-    
-    public void setPreferences(String p) {
-        preferences = p;
-    }
-    
-    public void setInterest(String i) {
-        interest = i;
     }
     
     /**

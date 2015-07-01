@@ -1,8 +1,16 @@
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * A movie and its details.
+ */
 public class Movie {
     private String title;
     private String genre;
@@ -21,6 +29,20 @@ public class Movie {
         releaseDate.set(2000, Calendar.JANUARY, 1);
         synopsis = "Something else";
         this.id = id;
+        
+        try {
+            Connection con = DriverManager.getConnection(MovieLogic.host, MovieLogic.uName, MovieLogic.uPass);
+            Statement stmt = con.createStatement();
+            String SQL = "SELECT STARRATING, TEXTREVIEW, USERID FROM REVIEWS WHERE MOVIEID='" + id + "'";
+            ResultSet rs = stmt.executeQuery(SQL);
+            while (rs.next()) {
+                StudentUser tempUser = (StudentUser)UserManager.find(rs.getInt("USERID"));
+                reviews.add(new Review(Integer.parseInt(rs.getString("STARRATING")), rs.getString("TEXTREVIEW"), tempUser));
+            }
+        }
+        catch (SQLException err) {
+            err.printStackTrace();
+        }
     }
     
     public Movie(String title, String genre, ArrayList<Review> reviews, Calendar releaseDate, String synopsis, int id) {
@@ -32,6 +54,10 @@ public class Movie {
         this.id = id;
     }
     
+    /**
+     * Returns the movie's id.
+     * @return the movie's id
+     */
     public int getId(){
         return id;
     }

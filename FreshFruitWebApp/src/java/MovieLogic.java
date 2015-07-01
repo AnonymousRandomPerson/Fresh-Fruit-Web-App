@@ -1,5 +1,3 @@
-import com.google.gson.Gson;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,16 +22,18 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+/**
+ * Contains static business logic functions for movie searching.
+ */
 public class MovieLogic {
     
     /**
      * The number of results to show.
      */
     public static final int limit = 50;
-    private static final String host = "jdbc:derby://localhost:1527/fruit";
-    private static final String uName = "team11";
-    private static final String uPass= "fruit";
+    public static final String host = "jdbc:derby://localhost:1527/fruit";
+    public static final String uName = "team11";
+    public static final String uPass= "fruit";
     
     /**
      * Finds movies based on a search query.
@@ -97,7 +97,7 @@ public class MovieLogic {
             return movies;
         }
         catch (SQLException err) {
-            System.out.println(err.getMessage());
+            err.printStackTrace();
         }
         return null;
     }
@@ -129,13 +129,18 @@ public class MovieLogic {
     
     /**
      * Finds the top rated movies.
-     * @return an array of top movies.
+     * @return an array of top movies
      */
     public static Movie[] getTopMovies() {
         String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?limit=" + limit + "&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
         return findMovies(link);
     }
     
+    /**
+     * Find movies similar to the specified movie.
+     * @param id the id of the movie to search for similar movies with
+     * @return an array of similar movies
+     */
     public static Movie[] getSimilarMovies(int id) {
         String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + "/similar.json?limit=5&apikey=yedukp76ffytfuy24zsqk7f5";
         return findMovies(link);

@@ -4,6 +4,9 @@ import javax.faces.bean.SessionScoped;
 
 @ManagedBean (name = "ui")
 @SessionScoped
+/**
+ * A generic UI class. Can be overridden (ProfileUI/MovieUI).
+ */
 public class UI {
     
     @ManagedProperty("#{userManager}")

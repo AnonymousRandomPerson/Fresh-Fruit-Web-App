@@ -4,11 +4,14 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * A normal user with the ability to search and rate movies.
+ */
 public class StudentUser extends User {
     
-    private String host = "jdbc:derby://localhost:1527/fruit";
-    private String uName = "team11";
-    private String uPass= "fruit";
+    private final String host = "jdbc:derby://localhost:1527/fruit";
+    private final String uName = "team11";
+    private final String uPass= "fruit";
 
     public StudentUser(String username, String password) {
         super(username, password);
@@ -22,11 +25,11 @@ public class StudentUser extends User {
         Normal, Locked, Banned
     }
     
-    private int[] dob;
     private Major major;
-    private String interest;
-    private Status status;
     private String preferences;
+    private String interest;
+    private int[] dob;
+    private Status status;
     
     /**
     * Gets the date of birth.
@@ -37,17 +40,17 @@ public class StudentUser extends User {
     }
     
     /**
-    * Gets major.
-    * @return the major
-    */
+     * Returns the user's major.
+     * @return the user's major
+     */
     public Major getMajor() {
         return major;
     }
     
     /**
-    * Gets interests.
-    * @return the interests
-    */
+     * Returns the user's interests.
+     * @return the user's interests
+     */
     public String getInterest() {
         return interest;
     }
@@ -61,9 +64,9 @@ public class StudentUser extends User {
     }
     
     /**
-    * Gets preferences.
-    * @return the preferences 
-    */
+     * Returns the user's preferences.
+     * @return the user's preferences
+     */
     public String getPreferences() {
         return preferences;
     }
@@ -77,7 +80,7 @@ public class StudentUser extends User {
     }
     
     /**
-     * Sets the major
+     * Sets the user's major.
      * @param major the new major
      */
     public void setMajor(Major major) {
@@ -85,8 +88,8 @@ public class StudentUser extends User {
     }
     
     /**
-     * Sets the interests.
-     * @param interest the new user interests 
+     * Sets the user's interests.
+     * @param interest the new interests
      */
     public void setInterest(String interest) {
         this.interest = interest;
@@ -101,9 +104,9 @@ public class StudentUser extends User {
     }
     
     /**
-    * Sets the user's preferences.
-    * @param preferences the new preferences
-    */
+     * Sets the user's preferences.
+     * @param preferences the new preferences
+     */
     public void setPreferences(String preferences) {
         this.preferences = preferences;
     }
