@@ -9,13 +9,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -107,29 +105,25 @@ public class MovieLogic {
     
     /**
      * Takes an id number and returns the movie object
+     * @param id the movie's id
      * @return the movie corresponding to the number
      */
     public static Movie getMovieById(int id) {
         String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + ".json?apikey=yedukp76ffytfuy24zsqk7f5";
         String callResult = getJsonData(link);
-        Pattern titlePattern = Pattern.compile("\"title\":\"(.+)\",\"year");
-        Pattern thumbnailPattern = Pattern.compile("\"thumbnail\":\"(.+)\",\"profile");
-        Pattern synopsisPattern = Pattern.compile("\"synopsis\":\"(.+)\",\"posters");
-        Pattern releasePattern = Pattern.compile("\"theater\":\"(.+)\"},\"ratings");
-        Matcher titleMatch = titlePattern.matcher(callResult);
-        titleMatch.find();
-        Matcher thumbnailMatch = thumbnailPattern.matcher(callResult);
-        thumbnailMatch.find();
-        Matcher synopsisMatch = synopsisPattern.matcher(callResult);
-        synopsisMatch.find();
-        Matcher releaseMatch = releasePattern.matcher(callResult);
-        releaseMatch.find();
-        try {
-            return new Movie(titleMatch.group(1), thumbnailMatch.group(1), "IDK", synopsisMatch.group(1), id);
-        } catch (IllegalStateException e) {
-            //e.printStackTrace();
-            return null;
+        Gson googleJson = new Gson();
+        JsonObject movieJson = googleJson.fromJson(callResult, JsonObject.class);
+        String title = movieJson.get("title").getAsString();
+        String thumbnail = ((JsonObject)movieJson.get("posters")).get("thumbnail").getAsString();
+        String synopsis = "None", release = "Unknown";
+        if (movieJson.get("synopsis") != null) {
+            synopsis = movieJson.get("synopsis").getAsString();
         }
+        JsonElement releaseJson = ((JsonObject)movieJson.get("release_dates")).get("theater");
+        if (releaseJson != null) {
+            release = releaseJson.getAsString();
+        }
+        return new Movie(title, thumbnail, release, synopsis, id);
     }
     
     /**
@@ -166,34 +160,25 @@ public class MovieLogic {
      */
     public static Movie[] findMovies(String query) {
         String callResult = getJsonData(query);
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jo = (JsonObject)jsonParser.parse(callResult);
-        JsonArray jsonArr = jo.getAsJsonArray("movies");
         Gson googleJson = new Gson();
-        ArrayList jsonObjList = googleJson.fromJson(jsonArr, ArrayList.class);
-        Pattern titlePattern = Pattern.compile("title=(.+), year");
-        Pattern thumbnailPattern = Pattern.compile("thumbnail=(.+), profile");
-        Pattern idPattern = Pattern.compile("id=(.+), title");
-        Pattern synopsisPattern = Pattern.compile("synopsis=(.+), posters");
-        Pattern releasePattern = Pattern.compile("theater=(.+)}, ratings");
-        int numMovies = Math.min(limit, jsonObjList.size());
+        JsonObject jo = googleJson.fromJson(callResult, JsonObject.class);
+        JsonArray movieArray = (JsonArray)jo.get("movies");
+        int numMovies = Math.min(limit, movieArray.size());
         Movie[] movies = new Movie[numMovies];
         for (int i = 0; i < numMovies; i++) {
-            Matcher titleMatch = titlePattern.matcher(jsonObjList.get(i).toString());
-            titleMatch.find();
-            Matcher thumbnailMatch = thumbnailPattern.matcher(jsonObjList.get(i).toString());
-            thumbnailMatch.find();
-            Matcher idMatch = idPattern.matcher(jsonObjList.get(i).toString());
-            idMatch.find();
-            Matcher synopsisMatch = synopsisPattern.matcher(jsonObjList.get(i).toString());
-            synopsisMatch.find();
-            Matcher releaseMatch = releasePattern.matcher(jsonObjList.get(i).toString());
-            releaseMatch.find();
-            try {
-                movies[i] = new Movie(titleMatch.group(1), thumbnailMatch.group(1), "IDK", synopsisMatch.group(1), Integer.parseInt(idMatch.group(1)));
-            } catch (IllegalStateException e) {
-                e.printStackTrace();
+            JsonObject movieJson = (JsonObject)movieArray.get(i);
+            String title = movieJson.get("title").getAsString();
+            String thumbnail = ((JsonObject)movieJson.get("posters")).get("thumbnail").getAsString();
+            int id = movieJson.get("id").getAsInt();
+            String synopsis = "None", release = "Unknown";
+            if (movieJson.get("synopsis") != null) {
+                synopsis = movieJson.get("synopsis").getAsString();
             }
+            JsonElement releaseJson = ((JsonObject)movieJson.get("release_dates")).get("theater");
+            if (releaseJson != null) {
+                release = releaseJson.getAsString();
+            }
+            movies[i] = new Movie(title, thumbnail, release, synopsis, id);
         }
         return movies;
     }
@@ -204,34 +189,31 @@ public class MovieLogic {
      * @return the JSON data
      */
     public static String getJsonData(String link) {
-        URL url = null;
+        URL url;
         String jsonData = "";
         try {
             url = new URL(link);
         
-		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-		conn.setRequestMethod("GET");
-		conn.setRequestProperty("Accept", "application/json");
-                
-                if (conn.getResponseCode() != 200) {
-			throw new RuntimeException("Failed : HTTP error code : "
-					+ conn.getResponseCode());
-		}
-                BufferedReader br = new BufferedReader(new InputStreamReader(
-			(conn.getInputStream())));
-		String output;
-		//System.out.println("Output from Server .... \n");
-		while ((output = br.readLine()) != null) {
-			//System.out.println(output);
-                        jsonData+=output;
-		}
-                //System.out.println("Got JSON: " + jsonData);
-		conn.disconnect();
-                } catch (MalformedURLException ex) {
-                   Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (IOException ex) {
-                    System.out.println("Cannot open url");
-                }
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader(
+                    (conn.getInputStream())));
+            String output;
+            while ((output = br.readLine()) != null) {
+                jsonData+=output;
+            }
+            conn.disconnect();
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                System.out.println("Cannot open url");
+                ex.printStackTrace();
+            }
         return jsonData;
     }
 }

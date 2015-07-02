@@ -28,16 +28,7 @@ public class StudentUser extends User {
     private Major major;
     private String preferences;
     private String interest;
-    private int[] dob;
     private Status status;
-    
-    /**
-    * Gets the date of birth.
-    * @return the date of birth
-    */
-    public int[] getDob() {
-        return dob;
-    }
     
     /**
      * Returns the user's major.
@@ -69,14 +60,6 @@ public class StudentUser extends User {
      */
     public String getPreferences() {
         return preferences;
-    }
-    
-    /**
-     * Sets date of birth.
-     * @param dob the new date of birth
-     */
-    public void setDob(int[] dob) {
-        this.dob = dob;
     }
     
     /**

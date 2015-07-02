@@ -43,8 +43,7 @@ public class Movie {
                 StudentUser tempUser = (StudentUser)UserManager.find(rs.getInt("USERID"));
                 reviews.add(new Review(Integer.parseInt(rs.getString("STARRATING")), rs.getString("TEXTREVIEW"), tempUser));
             }
-        }
-        catch (SQLException err) {
+        } catch (SQLException err) {
             err.printStackTrace();
         }
     }
