@@ -196,18 +196,14 @@ public class MovieUI extends UI {
         if (movie != null) {
             movie.addReview(new Review(rating, reviewText, user));
             try {
-                Connection con = DriverManager.getConnection(host, uName, uPass);
-                Statement stmt = con.createStatement();
-                String SQL = "SELECT USERID FROM USERS WHERE USERNAME = '" + user.getUsername() + "'";
-                ResultSet rs = stmt.executeQuery(SQL);
+                ResultSet rs = UserManager.querySQL("SELECT USERID FROM USERS WHERE USERNAME = '" + user.getUsername() + "'");
                 int userID = -1;
                 if (rs.next()) {
                     userID = rs.getInt("USERID");
                 }
 
-                SQL = "INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWMAJOR, USERID) "
-                        + "VALUES ('" + movie.getId() + "', " + rating + ",'" + reviewText + "','" + user.getMajor() + "'," + userID + ")";
-                stmt.executeUpdate(SQL);
+                UserManager.updateSQL("INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWMAJOR, USERID) "
+                        + "VALUES ('" + movie.getId() + "', " + rating + ",'" + reviewText + "','" + user.getMajor() + "'," + userID + ")");
                 context.addMessage(null, new FacesMessage("Your review has been submitted."));
             } catch (SQLException err) {
                 err.printStackTrace();

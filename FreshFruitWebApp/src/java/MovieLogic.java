@@ -14,11 +14,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 /**
  * Contains static business logic functions for movie searching.
@@ -63,10 +60,7 @@ public class MovieLogic {
         ArrayList totals = new ArrayList();
         ArrayList reviewCount = new ArrayList();
         try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "SELECT MOVIEID,STARRATING FROM REVIEWS WHERE REVIEWMAJOR=\'" + major + "\'";
-            ResultSet rs = stmt.executeQuery( SQL );
+            ResultSet rs = UserManager.querySQL("SELECT MOVIEID,STARRATING FROM REVIEWS WHERE REVIEWMAJOR=\'" + major + "\'");
             while (rs.next()) {
                 int testID = Integer.parseInt(rs.getString("MOVIEID"));
                 if (ids.contains(testID)) {
@@ -96,9 +90,8 @@ public class MovieLogic {
                 }
             }
             return movies;
-        }
-        catch (SQLException err) {
-            //err.printStackTrace();
+        } catch (SQLException err) {
+            err.printStackTrace();
         }
         return null;
     }
@@ -153,6 +146,7 @@ public class MovieLogic {
         String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + "/similar.json?limit=5&apikey=yedukp76ffytfuy24zsqk7f5";
         return findMovies(link);
     }
+    
     /**
      * Gets movies from Rotten Tomatoes based on the query.
      * @param query the URL to get the JSON from

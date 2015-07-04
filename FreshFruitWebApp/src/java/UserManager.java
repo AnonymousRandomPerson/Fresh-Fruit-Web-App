@@ -28,6 +28,14 @@ public class UserManager {
      * Creates a new instance of UserManager.
      */
     public UserManager() {
+        ResultSet rs = querySQL("SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST,STATUS FROM USERS");
+        try {
+            while (rs.next()) {
+                userList.put(rs.getString("USERNAME"), recreateUser(rs));
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
     }
     
     /**
@@ -36,6 +44,14 @@ public class UserManager {
      */
     public User getUser() {
         return currentUser;
+    }
+    
+    /**
+     * Returns all users in the system.
+     * @return a map containing all users in the system
+     */
+    public Map<String, User> getUsers() {
+        return userList;
     }
     
     /**
@@ -56,16 +72,7 @@ public class UserManager {
         User newUser = new StudentUser(user, pass);
         newUser.setUserManager(this);
         userList.put(user, newUser);
-        try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "INSERT INTO USERS (USERNAME, PASSWORD)"
-                    + "VALUES (\'" + user + "\',\'" + pass + "\')";
-            stmt.executeUpdate( SQL );
-        }
-        catch (SQLException err) {
-            err.printStackTrace();
-        }
+        updateSQL("INSERT INTO USERS (USERNAME, PASSWORD)" + "VALUES (\'" + user + "\',\'" + pass + "\')");
         
         return newUser;
     }
@@ -79,16 +86,7 @@ public class UserManager {
         User user = find(oldName);
         userList.put(newName, user);
         userList.remove(oldName);
-        try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "UPDATE USERS"
-                    + " SET USERNAME=\'" + newName + "\' WHERE USERNAME=\'" + oldName + "\'";
-            stmt.executeUpdate( SQL );
-        }
-        catch (SQLException err) {
-            err.printStackTrace();
-        }
+        updateSQL("UPDATE USERS" + " SET USERNAME=\'" + newName + "\' WHERE USERNAME=\'" + oldName + "\'");
     }
     
     /**
@@ -97,29 +95,7 @@ public class UserManager {
      * @return the User object, or null if the user does not exist
      */
     public User find(String username) {
-        if (userList.get(username) != null) {
-            return userList.get(username);
-        }
-        try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST FROM USERS WHERE USERNAME=\'" + username + "\'";
-            ResultSet rs = stmt.executeQuery( SQL );
-            if (rs.next()) {
-                StudentUser newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
-                newUser.setUserManager(this);
-                newUser.setEmail(rs.getString("EMAIL"));
-                newUser.setMajor(Major.valueOf(rs.getString("MAJOR")));
-                newUser.setPreferences(rs.getString("PREFERENCES"));
-                newUser.setInterest(rs.getString("INTEREST"));
-                userList.put(rs.getString("USERNAME"), newUser);
-                return newUser;
-            }
-        }
-        catch (SQLException err) {
-            err.printStackTrace();
-        }
-    return null;
+        return userList.get(username);
     }
     
     /**
@@ -128,14 +104,34 @@ public class UserManager {
      * @return the user with the id, or null if no user is found
      */
     public static User find(int id) {
+        ResultSet rs = querySQL("SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST,STATUS FROM USERS WHERE USERID=" + id);
         try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST FROM USERS WHERE USERID=" + id;
-            ResultSet rs = stmt.executeQuery( SQL );
             if (rs.next()) {
+                return recreateUser(rs);
+            }
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
+        return null;
+    }
+    
+    /**
+     * Makes a user object based on a database query result.
+     * @param rs the database result
+     * @return the created user object
+     */
+    public static User recreateUser(ResultSet rs) {
+        try {
+            User.Status status = User.Status.valueOf(rs.getString("STATUS"));
+            if (status == User.Status.Admin) {
+                AdminUser newUser = new AdminUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
+                newUser.setEmail(rs.getString("EMAIL"));
+                newUser.setStatus(status);
+                return newUser;
+            } else {
                 StudentUser newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
                 newUser.setEmail(rs.getString("EMAIL"));
+                newUser.setStatus(status);
                 newUser.setMajor(Major.valueOf(rs.getString("MAJOR")));
                 newUser.setPreferences(rs.getString("PREFERENCES"));
                 newUser.setInterest(rs.getString("INTEREST"));
@@ -145,5 +141,35 @@ public class UserManager {
             err.printStackTrace();
         }
         return null;
+    }
+    
+    /**
+     * Executes an SQL query.
+     * @param query the SQL query
+     * @return the result of the SQL query
+     */
+    public static ResultSet querySQL(String query) {
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            return stmt.executeQuery(query);
+        } catch (SQLException err) {
+            err.printStackTrace();
+            return null;
+        }
+    }
+    
+        /**
+     * Executes an SQL update.
+     * @param query the SQL statement
+     */
+    public static void updateSQL(String query) {
+        try {
+            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Statement stmt = con.createStatement();
+            stmt.executeUpdate(query);
+        } catch (SQLException err) {
+            err.printStackTrace();
+        }
     }
 }

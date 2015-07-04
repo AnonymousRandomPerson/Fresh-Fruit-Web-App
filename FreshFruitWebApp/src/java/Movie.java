@@ -1,8 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,13 +32,12 @@ public class Movie {
         this.id = id;
         
         try {
-            Connection con = DriverManager.getConnection(MovieLogic.host, MovieLogic.uName, MovieLogic.uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "SELECT STARRATING, TEXTREVIEW, USERID FROM REVIEWS WHERE MOVIEID='" + id + "'";
-            ResultSet rs = stmt.executeQuery(SQL);
+            ResultSet rs = UserManager.querySQL("SELECT STARRATING, TEXTREVIEW, USERID FROM REVIEWS WHERE MOVIEID='" + id + "'");
             while (rs.next()) {
-                StudentUser tempUser = (StudentUser)UserManager.find(rs.getInt("USERID"));
-                reviews.add(new Review(Integer.parseInt(rs.getString("STARRATING")), rs.getString("TEXTREVIEW"), tempUser));
+                User tempUser = UserManager.find(rs.getInt("USERID"));
+                if (tempUser instanceof StudentUser) {
+                    reviews.add(new Review(Integer.parseInt(rs.getString("STARRATING")), rs.getString("TEXTREVIEW"), (StudentUser)tempUser));
+                }
             }
         } catch (SQLException err) {
             err.printStackTrace();

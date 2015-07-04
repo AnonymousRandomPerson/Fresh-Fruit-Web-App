@@ -4,27 +4,22 @@ public class AdminUser extends User {
         super(username, password);
     }
     
-    public User[] listUsers() {
-        return null;
-    }
-    
-    public void banUser(User user) {
-        
-    }
-    
-    public void unbanUser(User user) {
-        
-    }
-    
-    public void unlockUser(User user) {
-        
-    }
-    
-    public void removeReview(Review review) {
-        
-    }
-    
+    /**
+     * Edits the user's profile.
+     * @param user the new username
+     * @param pass the new password
+     * @param email the new email address
+     */
     public void editProfile(String user, String pass, String email) {
-        
+        String oldUsername = username;
+        if (!username.equals(user)) {
+            userManager.changeUsername(username, user);
+        }
+        username = user;
+        password = pass;
+        this.email = email;
+
+        UserManager.updateSQL("UPDATE USERS"
+                    + " SET USERNAME=\'" + user + "\', PASSWORD=\'" + pass + "\', EMAIL=\'" + email + "\' WHERE USERNAME=\'" + oldUsername + "\'");
     }
 }

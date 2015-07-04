@@ -1,34 +1,16 @@
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-
 /**
  * A normal user with the ability to search and rate movies.
  */
 public class StudentUser extends User {
-    
-    private final String host = "jdbc:derby://localhost:1527/fruit";
-    private final String uName = "team11";
-    private final String uPass= "fruit";
 
     public StudentUser(String username, String password) {
         super(username, password);
         major = Major.Un;
     }
     
-    /**
-    * Status of the user
-    */
-    public enum Status {
-        Normal, Locked, Banned
-    }
-    
     private Major major;
     private String preferences;
     private String interest;
-    private Status status;
     
     /**
      * Returns the user's major.
@@ -44,14 +26,6 @@ public class StudentUser extends User {
      */
     public String getInterest() {
         return interest;
-    }
-    
-    /**
-     * Gets the status of the user.
-     * @return the status of the user
-     */
-    public Status getStatus() {
-        return status;
     }
     
     /**
@@ -79,14 +53,6 @@ public class StudentUser extends User {
     }
     
     /**
-     * Sets the status.
-     * @param status the new status
-     */
-    public void setStatus(Status status) {
-        this.status = status;
-    }
-    
-    /**
      * Sets the user's preferences.
      * @param preferences the new preferences
      */
@@ -104,6 +70,7 @@ public class StudentUser extends User {
      * @param interest the user's new interests
      */
     public void editProfile(String user, String pass, String email, Major major, String preferences, String interest) {
+        String oldUsername = username;
         if (!username.equals(user)) {
             userManager.changeUsername(username, user);
         }
@@ -113,15 +80,7 @@ public class StudentUser extends User {
         this.major = major;
         this.preferences = preferences;
         this.interest = interest;
-        try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
-            Statement stmt = con.createStatement();
-            String SQL = "UPDATE USERS"
-                    + " SET PASSWORD=\'" + pass + "\', EMAIL=\'" + email + "\', MAJOR=\'" + major + "\', PREFERENCES=\'" + preferences + "\', INTEREST=\'" + interest + "\' WHERE USERNAME=\'" + user + "\'";
-            stmt.executeUpdate( SQL );
-        }
-        catch (SQLException err) {
-            System.out.println(err.getMessage());
-        }
+        UserManager.updateSQL("UPDATE USERS"
+                    + " SET USERNAME=\'" + user + "\', SET PASSWORD=\'" + pass + "\', EMAIL=\'" + email + "\', MAJOR=\'" + major + "\', PREFERENCES=\'" + preferences + "\', INTEREST=\'" + interest + "\' WHERE USERNAME=\'" + oldUsername + "\'");
     }
 }

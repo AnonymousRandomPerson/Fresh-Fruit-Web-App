@@ -1,3 +1,4 @@
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -24,6 +25,27 @@ public class ProfileUI extends UI {
     private Map<String,String> majors;
     
     public ProfileUI() {
+    }
+    
+    /**
+     * Returns all users in the system.
+     * @return a collection containing all users in the system
+     */
+    public Collection<User> getUsers() {
+        return userManager.getUsers().values();
+    }
+    
+    /**
+     * Returns all existing statuses.
+     * @return an array of strings representing each status
+     */
+    public String[] getStatuses() {
+        User.Status[] statuses = User.Status.values();
+        String[] statusStrings = new String[statuses.length];
+        for (int i = 0; i < statuses.length; i++) {
+            statusStrings[i] = statuses[i].toString();
+        }
+        return statusStrings;
     }
     
     /**
@@ -138,7 +160,7 @@ public class ProfileUI extends UI {
      * Sets the interests in the UI.
      * @param i the new interests in the UI
      */
-    public void setInterest(String i){
+    public void setInterest(String i) {
         interest = i;
     }
     
@@ -162,7 +184,7 @@ public class ProfileUI extends UI {
     
     /**
      * Logs a user in.
-     * @return the home page if successful, null if not successful
+     * @return the respective home page for the user's type if successful, null if not successful
      */
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
@@ -175,6 +197,8 @@ public class ProfileUI extends UI {
             context.addMessage(null, new FacesMessage("Username or password incorrect."));
         } else if (user.isLocked()) {
             context.addMessage(null, new FacesMessage("You have exceeded your number of attempts to log in."));
+        } else if (user.isBanned()) {
+            context.addMessage(null, new FacesMessage("You have been banned from this application."));
         } else if (user.checkLogin(password)) {
             email = user.getEmail();
             if (user instanceof StudentUser) {
@@ -183,7 +207,7 @@ public class ProfileUI extends UI {
                 preferences = ((StudentUser)user).getPreferences();
             }
             userManager.setUser(user);
-            return "home";
+            return cancelHome();
         } else {
             context.addMessage(null, new FacesMessage("Username or password incorrect."));
         }
@@ -215,7 +239,7 @@ public class ProfileUI extends UI {
      * @return the home page
      */
     public String cancelHome() {
-        return "home";
+        return userManager.getUser() instanceof AdminUser ? "adminhome" : "home";
     }
     
     /**
@@ -223,7 +247,7 @@ public class ProfileUI extends UI {
      * @return the profile page
      */
     public String profile() {
-        return "profile";
+        return userManager.getUser() instanceof AdminUser ? "profileadmin" : "profile";
     }
     
     /**
@@ -233,18 +257,21 @@ public class ProfileUI extends UI {
     public String editProfile() {
         FacesContext context = FacesContext.getCurrentInstance();
         User user = userManager.getUser();
+        user.setUserManager(userManager);
         if (!user.getUsername().equals(username) && userManager.find(username) != null) {
             System.out.println(user.getUsername() + " " +  username);
             context.addMessage(null, new FacesMessage("Username is already taken."));
             return null;
         } else if (user instanceof StudentUser) {
             ((StudentUser)user).editProfile(username, password, email, major, preferences, interest);
+        } else if (user instanceof AdminUser) {
+            ((AdminUser)user).editProfile(username, password, email);
         }
-        return "home";
+        return cancelHome();
     }
     
     /**
-     * make a HashMap that maps fullname to name 
+     * Makes a HashMap that maps fullName to name 
      */
     @PostConstruct
     public void init() {

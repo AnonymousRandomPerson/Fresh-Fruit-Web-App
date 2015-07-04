@@ -18,7 +18,19 @@ public class User implements Serializable {
     protected String username;
     protected String password;
     protected String email;
+    protected Status status;
     protected int numTries;
+    
+    protected static final String host = "jdbc:derby://localhost:1527/fruit";
+    protected static final String uName = "team11";
+    protected static final String uPass= "fruit";
+    
+    /**
+    * Status of the user
+    */
+    public enum Status {
+        Normal, Locked, Banned, Admin
+    }
     
     /**
      * Creates a new instance of User.
@@ -56,6 +68,26 @@ public class User implements Serializable {
     }
     
     /**
+     * Gets the status of the user.
+     * @return the status of the user
+     */
+    public Status getStatus() {
+        return status;
+    }
+    
+    /**
+     * Gets the status of the user as a string.
+     * @return a string representing the user's status
+     */
+    public String getStatusString() {
+        if (status != null) {
+            return status.toString();
+        } else {
+            return "";
+        }
+    }
+    
+    /**
      * Sets the user's username.
      * @param u the new username
      */
@@ -80,6 +112,23 @@ public class User implements Serializable {
     }
     
     /**
+     * Sets the status.
+     * @param status the new status
+     */
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+    
+    /**
+     * Sets the user's status and updates it in the database.
+     * @param status The new status
+     */
+    public void setStatusString(String status) {
+        this.status = Status.valueOf(status);
+        UserManager.updateSQL("UPDATE USERS SET STATUS = \'" + status + "\' WHERE USERNAME = \'" + username + "\'");
+    }
+    
+    /**
      * Checks the login information.
      * @param p the attempted password
      * @return true if the password is correct
@@ -89,16 +138,29 @@ public class User implements Serializable {
             return true;
         } else {
             numTries++;
+            if (numTries >= UserManager.LIMITTRIES && this instanceof StudentUser) {
+                setStatus(Status.Locked);
+            }
             return false;
         }
     }
+    
     /**
      * Checks if the account is locked.
      * @return true if the account is locked
      */
     public boolean isLocked() {
-        return numTries >= UserManager.LIMITTRIES;
+        return getStatus() == Status.Locked;
     }
+    
+    /**
+     * Checks if the account is banned.
+     * @return true if the account is banned
+     */
+    public boolean isBanned() {
+        return getStatus() == Status.Banned;
+    }
+    
     /**
      * Sets the user manager.
      * @param um the user manager
