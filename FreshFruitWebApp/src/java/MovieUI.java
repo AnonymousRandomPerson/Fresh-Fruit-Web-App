@@ -1,8 +1,5 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -23,12 +20,6 @@ public class MovieUI extends UI {
     private int rating;
     
     private String reviewText;
-    
-    private int id;
-    
-    private String host = "jdbc:derby://localhost:1527/fruit";
-    private String uName = "team11";
-    private String uPass= "fruit";
    
     public MovieUI() {
     }
@@ -63,6 +54,14 @@ public class MovieUI extends UI {
      */
     public String getReviewText() {
         return reviewText;
+    }
+    
+    /**
+     * Gets the star rating in the UI.
+     * @return rating the rating
+     */
+    public int getRating() {
+        return rating;
     }
     
     /**
@@ -189,7 +188,9 @@ public class MovieUI extends UI {
     public String rate() {
         FacesContext context = FacesContext.getCurrentInstance();
         if (reviewText.equals("")) {
-            context.addMessage(null, new FacesMessage("You need to enter a review before it can be submitted."));
+            if (context != null) {
+                context.addMessage(null, new FacesMessage("You need to enter a review before it can be submitted."));
+            }
             return null;
         }
         StudentUser user = (StudentUser)userManager.getUser();
@@ -204,7 +205,9 @@ public class MovieUI extends UI {
 
                 UserManager.updateSQL("INSERT INTO REVIEWS (MOVIEID, STARRATING, TEXTREVIEW, REVIEWMAJOR, USERID) "
                         + "VALUES ('" + movie.getId() + "', " + rating + ",'" + reviewText + "','" + user.getMajor() + "'," + userID + ")");
-                context.addMessage(null, new FacesMessage("Your review has been submitted."));
+                if (context != null) {
+                    context.addMessage(null, new FacesMessage("Your review has been submitted."));
+                }
             } catch (SQLException err) {
                 err.printStackTrace();
             }
