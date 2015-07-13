@@ -102,6 +102,8 @@ public class MovieLogic {
      * @return the movie corresponding to the number
      */
     public static Movie getMovieById(int id) {
+        //id = 22494;
+        id = 770724989;
         String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + ".json?apikey=yedukp76ffytfuy24zsqk7f5";
         String callResult = getJsonData(link);
         Gson googleJson = new Gson();

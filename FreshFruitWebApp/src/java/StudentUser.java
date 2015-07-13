@@ -81,6 +81,6 @@ public class StudentUser extends User {
         this.preferences = preferences;
         this.interest = interest;
         UserManager.updateSQL("UPDATE USERS"
-                    + " SET USERNAME=\'" + user + "\', SET PASSWORD=\'" + pass + "\', EMAIL=\'" + email + "\', MAJOR=\'" + major + "\', PREFERENCES=\'" + preferences + "\', INTEREST=\'" + interest + "\' WHERE USERNAME=\'" + oldUsername + "\'");
-    }
+                    + " SET USERNAME=\'" + user + "\', PASSWORD=\'" + pass + "\', EMAIL=\'" + email + "\', MAJOR=\'" + major + "\', PREFERENCES=\'" + preferences + "\', INTEREST=\'" + interest + "\' WHERE USERNAME=\'" + oldUsername + "\'");
+        }
 }
