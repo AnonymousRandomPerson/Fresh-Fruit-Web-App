@@ -11,27 +11,25 @@ import javax.faces.bean.SessionScoped;
  * A generic user. Can be either a StudentUser or an AdminUser.
  */
 public class User implements Serializable {
-    
+
     @ManagedProperty("#{userManager}")
     protected UserManager userManager;
-    
     protected String username;
     protected String password;
     protected String email;
     protected Status status;
     protected int numTries;
-    
-    protected static final String host = "jdbc:derby://localhost:1527/fruit";
-    protected static final String uName = "team11";
-    protected static final String uPass= "fruit";
-    
+    protected static final String HOST = "jdbc:derby://localhost:1527/fruit";
+    protected static final String UNAME = "team11";
+    protected static final String UPASS = "fruit";
+
     /**
     * Status of the user
     */
     public enum Status {
         Normal, Locked, Banned, Admin
     }
-    
+
     /**
      * Creates a new instance of User.
      * @param username the user's username
@@ -42,15 +40,15 @@ public class User implements Serializable {
         this.password = password;
         numTries = 0;
     }
-    
+
     /**
      * Returns the user's username.
      * @return the user's username
      */
-    public String getUsername() { 
+    public String getUsername() {
         return username;
     }
-    
+
     /**
      * Returns the user's password.
      * @return the user's password
@@ -58,7 +56,7 @@ public class User implements Serializable {
     public String getPassword() {
         return password;
     }
-    
+
     /**
      * Returns the user's email address.
      * @return the user's email address
@@ -66,7 +64,7 @@ public class User implements Serializable {
     public String getEmail() {
         return email;
     }
-    
+
     /**
      * Gets the status of the user.
      * @return the status of the user
@@ -74,7 +72,7 @@ public class User implements Serializable {
     public Status getStatus() {
         return status;
     }
-    
+
     /**
      * Gets the status of the user as a string.
      * @return a string representing the user's status
@@ -86,7 +84,7 @@ public class User implements Serializable {
             return "";
         }
     }
-    
+
     /**
      * Sets the user's username.
      * @param u the new username
@@ -94,7 +92,7 @@ public class User implements Serializable {
     public void setUsername(String u) {
         username = u;
     }
-    
+
     /**
      * Sets the user's password.
      * @param p the new password
@@ -102,7 +100,7 @@ public class User implements Serializable {
     public void setPassword(String p) {
         password = p;
     }
-    
+
     /**
      * Sets the user's email address.
      * @param e the new email address
@@ -110,7 +108,7 @@ public class User implements Serializable {
     public void setEmail(String e) {
         email = e;
     }
-    
+
     /**
      * Sets the status.
      * @param status the new status
@@ -118,16 +116,17 @@ public class User implements Serializable {
     public void setStatus(Status status) {
         this.status = status;
     }
-    
+
     /**
      * Sets the user's status and updates it in the database.
      * @param status The new status
      */
     public void setStatusString(String status) {
         this.status = Status.valueOf(status);
-        UserManager.updateSQL("UPDATE USERS SET STATUS = \'" + status + "\' WHERE USERNAME = \'" + username + "\'");
+        UserManager.updateSQL("UPDATE USERS SET STATUS = \'"
+                + status + "\' WHERE USERNAME = \'" + username + "\'");
     }
-    
+
     /**
      * Checks the login information.
      * @param p the attempted password
@@ -138,13 +137,14 @@ public class User implements Serializable {
             return true;
         } else {
             numTries++;
-            if (numTries >= UserManager.LIMITTRIES && this instanceof StudentUser) {
+            if (numTries >= UserManager.LIMITTRIES
+                    && this instanceof StudentUser) {
                 setStatus(Status.Locked);
             }
             return false;
         }
     }
-    
+
     /**
      * Checks if the account is locked.
      * @return true if the account is locked
@@ -152,7 +152,7 @@ public class User implements Serializable {
     public boolean isLocked() {
         return getStatus() == Status.Locked;
     }
-    
+
     /**
      * Checks if the account is banned.
      * @return true if the account is banned
@@ -160,12 +160,20 @@ public class User implements Serializable {
     public boolean isBanned() {
         return getStatus() == Status.Banned;
     }
-    
+
     /**
      * Sets the user manager.
      * @param um the user manager
      */
     public void setUserManager(UserManager um) {
         userManager = um;
+    }
+
+    /**
+     * Gets the user manager.
+     * @return returns the UserManager instance
+     */
+    public UserManager getUserManager() {
+        return userManager;
     }
 }

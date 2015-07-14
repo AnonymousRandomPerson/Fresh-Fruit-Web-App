@@ -14,21 +14,22 @@ import javax.faces.bean.ApplicationScoped;
  * Manages all users in the system.
  */
 public class UserManager {
-    
+
     private Map<String, User> userList = new HashMap<>();
     public static final int LIMITTRIES = 3;
-    
+
     private User currentUser;
-    
-    private static final String host = "jdbc:derby://localhost:1527/fruit";
-    private static final String uName = "team11";
-    private static final String uPass= "fruit";
-    
+
+    private static final String HOST = "jdbc:derby://localhost:1527/fruit";
+    private static final String UNAME = "team11";
+    private static final String UPASS = "fruit";
+
     /**
      * Creates a new instance of UserManager.
      */
     public UserManager() {
-        ResultSet rs = querySQL("SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST,STATUS FROM USERS");
+        ResultSet rs = querySQL("SELECT USERNAME,PASSWORD,EMAIL,"
+                + "MAJOR,PREFERENCES,INTEREST,STATUS FROM USERS");
         try {
             while (rs.next()) {
                 userList.put(rs.getString("USERNAME"), recreateUser(rs));
@@ -37,7 +38,7 @@ public class UserManager {
             err.printStackTrace();
         }
     }
-    
+
     /**
      * Returns the current user of the application.
      * @return the user of the application.
@@ -45,7 +46,7 @@ public class UserManager {
     public User getUser() {
         return currentUser;
     }
-    
+
     /**
      * Returns all users in the system.
      * @return a map containing all users in the system
@@ -53,7 +54,7 @@ public class UserManager {
     public Map<String, User> getUsers() {
         return userList;
     }
-    
+
     /**
      * Sets the current application user.
      * @param user the new user
@@ -72,11 +73,11 @@ public class UserManager {
         User newUser = new StudentUser(user, pass);
         newUser.setUserManager(this);
         userList.put(user, newUser);
-        updateSQL("INSERT INTO USERS (USERNAME, PASSWORD)" + "VALUES (\'" + user + "\',\'" + pass + "\')");
-        
+        updateSQL("INSERT INTO USERS (USERNAME, PASSWORD)"
+                + "VALUES (\'" + user + "\',\'" + pass + "\')");
         return newUser;
     }
-    
+
     /**
      * Changes a user's username in the hash map.
      * @param oldName the user's old name
@@ -86,9 +87,10 @@ public class UserManager {
         User user = find(oldName);
         userList.put(newName, user);
         userList.remove(oldName);
-        updateSQL("UPDATE USERS" + " SET USERNAME=\'" + newName + "\' WHERE USERNAME=\'" + oldName + "\'");
+        updateSQL("UPDATE USERS" + " SET USERNAME=\'"
+                + newName + "\' WHERE USERNAME=\'" + oldName + "\'");
     }
-    
+
     /**
      * Finds a user in the map.
      * @param username the user to find
@@ -97,14 +99,15 @@ public class UserManager {
     public User find(String username) {
         return userList.get(username);
     }
-    
+
     /**
      * Finds a user by his/her unique id in the database.
      * @param id the id to find a user for
      * @return the user with the id, or null if no user is found
      */
     public static User find(int id) {
-        ResultSet rs = querySQL("SELECT USERNAME,PASSWORD,EMAIL,MAJOR,PREFERENCES,INTEREST,STATUS FROM USERS WHERE USERID=" + id);
+        ResultSet rs = querySQL("SELECT USERNAME,PASSWORD,EMAIL,MAJOR,"
+                + "PREFERENCES,INTEREST,STATUS FROM USERS WHERE USERID=" + id);
         try {
             if (rs.next()) {
                 return recreateUser(rs);
@@ -114,7 +117,7 @@ public class UserManager {
         }
         return null;
     }
-    
+
     /**
      * Makes a user object based on a database query result.
      * @param rs the database result
@@ -124,12 +127,14 @@ public class UserManager {
         try {
             User.Status status = User.Status.valueOf(rs.getString("STATUS"));
             if (status == User.Status.Admin) {
-                AdminUser newUser = new AdminUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
+                AdminUser newUser = new AdminUser(rs.getString("USERNAME"),
+                        rs.getString("PASSWORD"));
                 newUser.setEmail(rs.getString("EMAIL"));
                 newUser.setStatus(status);
                 return newUser;
             } else {
-                StudentUser newUser = new StudentUser(rs.getString("USERNAME"), rs.getString("PASSWORD"));
+                StudentUser newUser = new StudentUser(rs.getString("USERNAME"),
+                        rs.getString("PASSWORD"));
                 newUser.setEmail(rs.getString("EMAIL"));
                 newUser.setStatus(status);
                 newUser.setMajor(Major.valueOf(rs.getString("MAJOR")));
@@ -142,7 +147,7 @@ public class UserManager {
         }
         return null;
     }
-    
+
     /**
      * Executes an SQL query.
      * @param query the SQL query
@@ -150,7 +155,7 @@ public class UserManager {
      */
     public static ResultSet querySQL(String query) {
         try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Connection con = DriverManager.getConnection(HOST, UNAME, UPASS);
             Statement stmt = con.createStatement();
             return stmt.executeQuery(query);
         } catch (SQLException err) {
@@ -158,14 +163,14 @@ public class UserManager {
             return null;
         }
     }
-    
+
         /**
      * Executes an SQL update.
      * @param query the SQL statement
      */
     public static void updateSQL(String query) {
         try {
-            Connection con = DriverManager.getConnection(host, uName, uPass);
+            Connection con = DriverManager.getConnection(HOST, UNAME, UPASS);
             Statement stmt = con.createStatement();
             stmt.executeUpdate(query);
         } catch (SQLException err) {

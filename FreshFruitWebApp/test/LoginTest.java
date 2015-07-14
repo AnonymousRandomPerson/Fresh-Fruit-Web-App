@@ -52,8 +52,10 @@ public class LoginTest {
         ui.setUsername("");
         ui.setPassword(null);
         um.setUser(null);
-        assertNull(ui.login());
+        ui.setUserManager(um);
+        
         assertEquals("No username entered.", FacesContext.getCurrentInstance().getMessages().next().getDetail());
+        assertNull(ui.login());
     }
     
     @Test
@@ -65,6 +67,7 @@ public class LoginTest {
         um.setUser(user);
         ui.setUsername("user");
         ui.setPassword("pass");
+        ui.setUserManager(um);
         assertNull(ui.login());
         assertEquals("You have exceeded your number of attempts to log in.", FacesContext.getCurrentInstance().getMessages().next().getDetail());
     }
@@ -78,6 +81,7 @@ public class LoginTest {
         um.setUser(user);
         ui.setUsername("user");
         ui.setPassword("pass");
+        ui.setUserManager(um);
         assertNull(ui.login());
         assertEquals("You have been banned from this application.", FacesContext.getCurrentInstance().getMessages().next().getDetail());
     }
@@ -86,6 +90,7 @@ public class LoginTest {
     public void testLoginSuccess() {
         UserManager um = new UserManager();
         ProfileUI ui = new ProfileUI();
+        ui.setUserManager(um);
         StudentUser user = new StudentUser("user", "pass");
         user.setStatus(User.Status.Normal);
         um.setUser(user);
@@ -104,8 +109,8 @@ public class LoginTest {
         um.setUser(user);
         ui.setUsername("user");
         ui.setUsername("pass");
+        ui.setUserManager(um);
         assertNull(ui.login());
         assertEquals(false, user.checkLogin("pass"));
     }
 }
-    
