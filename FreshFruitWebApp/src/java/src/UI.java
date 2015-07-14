@@ -1,3 +1,5 @@
+package src;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -8,13 +10,11 @@ import javax.faces.bean.SessionScoped;
  * A generic UI class. Can be overridden (ProfileUI/MovieUI).
  */
 public class UI {
-    
+
+    /** Manages all users. */
     @ManagedProperty("#{userManager}")
-    protected UserManager userManager;
-    
-    public UI() {
-    }
-    
+    public UserManager userManager;
+
     /**
      * Sets the user manager.
      * @param um the user manager

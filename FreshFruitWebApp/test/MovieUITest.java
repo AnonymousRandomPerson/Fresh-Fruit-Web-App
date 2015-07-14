@@ -4,6 +4,11 @@
  * and open the template in the editor.
  */
 
+import src.Review;
+import src.StudentUser;
+import src.UserManager;
+import src.MovieUI;
+import src.Movie;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.junit.After;

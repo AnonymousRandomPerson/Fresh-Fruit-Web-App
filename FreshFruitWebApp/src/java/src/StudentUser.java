@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A normal user with the ability to search and rate movies.
  */

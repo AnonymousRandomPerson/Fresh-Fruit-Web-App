@@ -1,3 +1,7 @@
+import src.StudentUser;
+import src.ProfileUI;
+import src.User;
+import src.UserManager;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

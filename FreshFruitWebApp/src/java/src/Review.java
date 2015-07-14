@@ -1,3 +1,5 @@
+package src;
+
 /**
  * A movie review and its details.
  */

@@ -1,3 +1,5 @@
+package src;
+
 public class AdminUser extends User {
 
     public AdminUser(String username, String password) {
