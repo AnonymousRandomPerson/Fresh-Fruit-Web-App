@@ -5,7 +5,7 @@ package src;
  */
 public class StudentUser extends User {
     /**
-     * StudentUser Constructor
+     * StudentUser Constructor.
      * @param username the username of the student user
      * @param password the password of the student user
      */
@@ -13,8 +13,11 @@ public class StudentUser extends User {
         super(username, password);
         major = Major.Un;
     }
+    /** The user's major.*/
     private Major major;
+    /** The user's preferences.*/
     private String preferences;
+    /** The user's interest.*/
     private String interest;
     /**
      * Returns the user's major.

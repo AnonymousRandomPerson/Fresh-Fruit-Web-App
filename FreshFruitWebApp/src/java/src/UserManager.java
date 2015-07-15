@@ -10,20 +10,25 @@ import java.util.Map;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ApplicationScoped;
 
+/** ManagedBean notation. */
 @ManagedBean (name = "userManager")
+/** ApplicationScoped notation. */
 @ApplicationScoped
 /**
  * Manages all users in the system.
  */
 public class UserManager {
-
+    /** The list of the users. */
     private Map<String, User> userList = new HashMap<>();
+    /** The limit of trials. */
     public static final int LIMITTRIES = 3;
-
+    /** The current user. */
     private User currentUser;
-
+    /** The host of the database. */
     private static final String HOST = "jdbc:derby://localhost:1527/fruit";
+    /** The username of the database. */
     private static final String UNAME = "team11";
+    /** The pass of the database. */
     private static final String UPASS = "fruit";
 
     /**

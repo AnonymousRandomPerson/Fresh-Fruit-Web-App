@@ -28,6 +28,8 @@ public class ProfileUI extends UI {
     private String interest;
     /** The preferences in the profile screen. */
     private String preferences;
+    /** The error message from login. */
+    private String message;
 
     /** A map of majors used to populate the major combo box. */
     private Map<String,Map<String, String>> data = 
@@ -199,16 +201,20 @@ public class ProfileUI extends UI {
     public String login() {
         FacesContext context = FacesContext.getCurrentInstance();
         if ("".equals(username)) {
+            message = "No username entered.";
             context.addMessage(null, new FacesMessage("No username entered."));
         }
         User user = userManager.find(username);
         if (user == null) {
+            message = "Username or password incorrect.";
             context.addMessage(null, new FacesMessage(
                     "Username or password incorrect."));
         } else if (user.isLocked()) {
+            message = "You have exceeded your number of attempts to log in.";
             context.addMessage(null, new FacesMessage(
                     "You have exceeded your number of attempts to log in."));
         } else if (user.isBanned()) {
+            message = "You have been banned from this application.";
             context.addMessage(null, new FacesMessage(
                     "You have been banned from this application."));
         } else if (user.checkLogin(password)) {
@@ -221,10 +227,19 @@ public class ProfileUI extends UI {
             userManager.setUser(user);
             return cancelHome();
         } else {
+            message = "Username or password incorrect.";
             context.addMessage(null, new FacesMessage(
                     "Username or password incorrect."));
         }
         return null;
+    }
+
+    /**
+     * Gets the error message from login.
+     * @return the message
+     */
+    public String getMessage() {
+        return message;
     }
 
     /**

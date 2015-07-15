@@ -6,40 +6,53 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 
-
+/** ManagedBean notation.*/
 @ManagedBean
+/** SessionScoped notation.*/
 @SessionScoped
 /**
  * A generic user. Can be either a StudentUser or an AdminUser.
  */
 public class User implements Serializable {
-
+    /** MangedProperty notation. */
     @ManagedProperty("#{userManager}")
+    /** The serialVersionUID of the User class. */
+    protected static final long serialVersionUID = 666L;
+    /** The user manager of the user. */
     protected UserManager userManager;
+    /** The username of the user. */
     protected String username;
+    /** The password of the user. */
     protected String password;
+    /** The email of the user. */
     protected String email;
+    /** The status of the user account. */
     protected Status status;
+    /** The number of trial of login. */
     protected int numTries;
+    /** The name of host of the database. */
     protected static final String HOST = "jdbc:derby://localhost:1527/fruit";
+    /** The username of the database. */
     protected static final String UNAME = "team11";
+    /** The pass of the database. */
     protected static final String UPASS = "fruit";
 
     /**
-    * Status of the user
+    * Status of the user.
     */
     public enum Status {
+        /** the statuses of user. */
         Normal, Locked, Banned, Admin
     }
 
     /**
      * Creates a new instance of User.
-     * @param username the user's username
-     * @param password the user's password
+     * @param usern the user's username
+     * @param passw the user's password
      */
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    public User(String usern, String passw) {
+        this.username = usern;
+        this.password = passw;
         numTries = 0;
     }
 
@@ -80,35 +93,43 @@ public class User implements Serializable {
      * @return a string representing the user's status
      */
     public String getStatusString() {
-        if (status != null) {
-            return status.toString();
-        } else {
+        if (status == null) {
             return "";
+        } else {
+            return status.toString();
         }
     }
 
     /**
-     * Sets the user's username.
-     * @param u the new username
+     * Gets the number of trial.
+     * @return numTries
      */
-    public void setUsername(String u) {
-        username = u;
+    public int getNumTries() {
+        return numTries;
+    }
+
+    /**
+     * Sets the user's username.
+     * @param usernm the new username
+     */
+    public void setUsername(String usernm) {
+        username = usernm;
     }
 
     /**
      * Sets the user's password.
-     * @param p the new password
+     * @param pass the new password
      */
-    public void setPassword(String p) {
-        password = p;
+    public void setPassword(String pass) {
+        password = pass;
     }
 
     /**
      * Sets the user's email address.
-     * @param e the new email address
+     * @param eml the new email address
      */
-    public void setEmail(String e) {
-        email = e;
+    public void setEmail(String eml) {
+        email = eml;
     }
 
     /**
@@ -130,12 +151,19 @@ public class User implements Serializable {
     }
 
     /**
+     * Sets the number of trials.
+     * @param num the number
+     */
+    public void setNumTries(int num) {
+        numTries = num;
+    }
+    /**
      * Checks the login information.
-     * @param p the attempted password
+     * @param pass the attempted password
      * @return true if the password is correct
      */
-    public boolean checkLogin(String p) {
-        if (p.equals(password)) {
+    public boolean checkLogin(String pass) {
+        if (pass.equals(password)) {
             return true;
         } else {
             numTries++;
@@ -165,10 +193,10 @@ public class User implements Serializable {
 
     /**
      * Sets the user manager.
-     * @param um the user manager
+     * @param umanager the user manager
      */
-    public void setUserManager(UserManager um) {
-        userManager = um;
+    public void setUserManager(UserManager umanager) {
+        userManager = umanager;
     }
 
     /**

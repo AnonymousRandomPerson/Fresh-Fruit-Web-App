@@ -14,6 +14,9 @@ import javax.faces.context.FacesContext;
  * @author Hongrui Zheng
  */
 public class LoginTest {
+    private ProfileUI ui;
+    private UserManager um;
+    private StudentUser user;
     public LoginTest() {
     }
     
@@ -27,6 +30,11 @@ public class LoginTest {
     
     @Before
     public void setUp() {
+        ui = new ProfileUI();
+        um = new UserManager();
+        user = (StudentUser) um.makeUser("user", "pass");
+        ui.setUserManager(um);
+        um.setUser(user);
     }
     
     @After
@@ -36,68 +44,38 @@ public class LoginTest {
     /**
      * Test of login method
      */
-    @Test
-    public void testLoginNull() {
-        UserManager um = new UserManager();
-        ProfileUI ui = new ProfileUI();
-        ui.setUserManager(um);
-        ui.setUsername(null);
-        ui.setPassword(null);
-        um.setUser(null);
-        assertNull(ui.login());
-        assertEquals("Username or password incorrect.", FacesContext.getCurrentInstance().getMessages().next().getDetail());
-    }
-    
     @Test 
     public void testLoginEmpty() {
-        UserManager um = new UserManager();
-        ProfileUI ui = new ProfileUI();
-        ui.setUserManager(um);
         ui.setUsername("");
-        ui.setPassword(null);
-        um.setUser(null);
-        ui.setUserManager(um);
-        
-        assertEquals("No username entered.", FacesContext.getCurrentInstance().getMessages().next().getDetail());
+        ui.setPassword("");
+        assertEquals("No username entered.", ui.getMessage());
         assertNull(ui.login());
     }
     
     @Test
     public void testLoginLocked() {
-        UserManager um = new UserManager();
-        ProfileUI ui = new ProfileUI();
-        StudentUser user = new StudentUser("user", "pass");
         user.setStatus(User.Status.Locked);
         um.setUser(user);
         ui.setUsername("user");
         ui.setPassword("pass");
         ui.setUserManager(um);
         assertNull(ui.login());
-        assertEquals("You have exceeded your number of attempts to log in.", FacesContext.getCurrentInstance().getMessages().next().getDetail());
+        assertEquals("You have exceeded your number of attempts to log in.", ui.getMessage());
     }
     
     @Test
     public void testLoginBanned() {
-        UserManager um = new UserManager();
-        ProfileUI ui = new ProfileUI();
-        StudentUser user = new StudentUser("user", "pass");
         user.setStatus(User.Status.Banned);
         um.setUser(user);
         ui.setUsername("user");
         ui.setPassword("pass");
         ui.setUserManager(um);
         assertNull(ui.login());
-        assertEquals("You have been banned from this application.", FacesContext.getCurrentInstance().getMessages().next().getDetail());
+        assertEquals("You have been banned from this application.", ui.getMessage());
     }
     
     @Test
     public void testLoginSuccess() {
-        UserManager um = new UserManager();
-        ProfileUI ui = new ProfileUI();
-        ui.setUserManager(um);
-        StudentUser user = new StudentUser("user", "pass");
-        user.setStatus(User.Status.Normal);
-        um.setUser(user);
         ui.setUsername("user");
         ui.setUsername("pass");
         assertEquals("home", ui.login());
@@ -106,14 +84,8 @@ public class LoginTest {
     
     @Test
     public void testLoginFail() {
-        UserManager um = new UserManager();
-        ProfileUI ui = new ProfileUI();
-        StudentUser user = new StudentUser("user", "Wrongpass");
-        user.setStatus(User.Status.Normal);
-        um.setUser(user);
         ui.setUsername("user");
-        ui.setUsername("pass");
-        ui.setUserManager(um);
+        ui.setUsername("wrongpass");
         assertNull(ui.login());
         assertEquals(false, user.checkLogin("pass"));
     }
