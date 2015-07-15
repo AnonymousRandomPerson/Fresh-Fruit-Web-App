@@ -1,7 +1,16 @@
 package src;
 
+/**
+ * Represents an administrator user.
+ * @author Benjamin
+ */
 public class AdminUser extends User {
 
+    /**
+     * Instantiates an admin user.
+     * @param username username of admin user
+     * @param password password of admin user
+     */
     public AdminUser(String username, String password) {
         super(username, password);
     }
@@ -22,6 +31,8 @@ public class AdminUser extends User {
         this.email = email;
 
         UserManager.updateSQL("UPDATE USERS"
-                    + " SET USERNAME=\'" + user + "\', PASSWORD=\'" + pass + "\', EMAIL=\'" + email + "\' WHERE USERNAME=\'" + oldUsername + "\'");
+                    + " SET USERNAME=\'" + user + "\', PASSWORD=\'" + pass
+                    + "\', EMAIL=\'" + email + "\' WHERE USERNAME=\'"
+                    + oldUsername + "\'");
     }
 }

@@ -7,10 +7,11 @@ package src;
  */
 
 /**
- * An enum representing valid majors.
- * @author Greg
+ * 
+ * @author Benjamin
  */
 public enum Major {
+
     AE("Aerospace Engineering"),
     ARCH("Architecture"),
     BME("Biomedical Engineering"),
@@ -26,16 +27,19 @@ public enum Major {
     Phys("Physics"),
     Un("Undecided");
 
-    public String fullName;
+    /**
+     * Full name of a major.
+     */
+    private String fullName;
 
     /**
      * Sets major.
-     * @param name the name of the major 
+     * @param name the name of the major
      */
     private Major(String name) {
         fullName = name;
     }
-    
+
     /**
      * Returns the full name of the major.
      * @return the full name of the major
@@ -43,11 +47,11 @@ public enum Major {
     public String getFullName() {
         return fullName;
     }
-    
+
     /**
     * Gets Major enum from a full name string.
     * @param fullName get the name of major
-    * @return the Major enum corresponding to the string, or 
+    * @return the Major enum corresponding to the string
     */
     public static Major getMajorFromString(String fullName) {
         try {
