@@ -30,6 +30,8 @@ public class ProfileUI extends UI {
     private String preferences;
     /** The error message from login. */
     private String message;
+    /** The faces context of the session. */
+    private FacesContext context;
 
     /** A map of majors used to populate the major combo box. */
     private Map<String,Map<String, String>> data = 
@@ -117,7 +119,22 @@ public class ProfileUI extends UI {
     public String getInterest() {
         return interest;
     }
-
+    
+    /**
+     * Gets the faces context of the UI.
+     * @return the context
+     */
+    public FacesContext getContext() {
+        return context;
+    }
+    
+    /**
+     * Sets the faces context of the UI.
+     * @param con the context to be set
+     */
+    public void setContext(FacesContext con) {
+        context = con;
+    }
     /**
      * Sets the username in the UI.
      * @param u the new username in the UI
@@ -199,7 +216,7 @@ public class ProfileUI extends UI {
      * null if not successful
      */
     public String login() {
-        FacesContext context = FacesContext.getCurrentInstance();
+        context = FacesContext.getCurrentInstance();
         if ("".equals(username)) {
             message = "No username entered.";
             context.addMessage(null, new FacesMessage("No username entered."));

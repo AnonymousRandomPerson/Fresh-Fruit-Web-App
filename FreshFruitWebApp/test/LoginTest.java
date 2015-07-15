@@ -9,6 +9,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import javax.faces.context.FacesContext;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import javax.faces.context.ExternalContext;
+import java.util.HashMap;
+import java.util.Map;
+import src.ProfileUI;
 /**
  * JUnit Test for login()
  * @author Hongrui Zheng
@@ -17,6 +23,7 @@ public class LoginTest {
     private ProfileUI ui;
     private UserManager um;
     private StudentUser user;
+    private FacesContext context;
     public LoginTest() {
     }
     
@@ -35,6 +42,16 @@ public class LoginTest {
         user = (StudentUser) um.makeUser("user", "pass");
         ui.setUserManager(um);
         um.setUser(user);
+        context = ContextMocker.mockFacesContext();
+        try {
+            Map<String, Object> session = new HashMap<String, Object>();
+            ExternalContext ext = mock(ExternalContext.class);
+            when(ext.getSessionMap()).thenReturn(session);
+            when(context.getExternalContext()).thenReturn(ext);
+        } finally {
+            context.release();
+        }
+        ui.setContext(context);
     }
     
     @After
