@@ -200,6 +200,10 @@ public class ProfileUI extends UI {
         return "home";
     }
     
+    /**
+     * Displays a message to the UI.
+     * @param msg The message to display.
+     */
     public void displayMessage(String msg) {
         FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
     }
