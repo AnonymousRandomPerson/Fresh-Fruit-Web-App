@@ -212,7 +212,7 @@ public class ProfileUI extends UI {
     public String login() {
         context = FacesContext.getCurrentInstance();
         if ("".equals(username)) {
-            message = "No username entered.";
+            this.message = "No username entered.";
             context.addMessage(null, new FacesMessage("No username entered."));
         }
         User user = userManager.find(username);
@@ -327,7 +327,7 @@ public class ProfileUI extends UI {
     public void init() {
         majors = new HashMap<>();
         for (Major m : Major.values()) {
-            majors.put(m.fullName, m.name());
+            majors.put(m.getFullName(), m.name());
         }
     }
 
