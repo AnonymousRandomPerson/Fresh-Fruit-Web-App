@@ -30,7 +30,7 @@ public enum Major {
     /**
      * Full name of a major.
      */
-    private String fullName;
+    public String fullName;
 
     /**
      * Sets major.

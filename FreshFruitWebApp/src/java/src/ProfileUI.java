@@ -119,7 +119,6 @@ public class ProfileUI extends UI {
     public String getInterest() {
         return interest;
     }
-    
     /**
      * Gets the faces context of the UI.
      * @return the context
@@ -127,7 +126,6 @@ public class ProfileUI extends UI {
     public FacesContext getContext() {
         return context;
     }
-    
     /**
      * Sets the faces context of the UI.
      * @param con the context to be set
@@ -142,7 +140,6 @@ public class ProfileUI extends UI {
     public void setUsername(String u) {
         username = u;
     }
-
     /**
      * Sets the password in the UI.
      * @param p the new password in the UI
@@ -158,7 +155,6 @@ public class ProfileUI extends UI {
     public void setEmail(String e) {
         email = e;
     }
-
     /**
      * Sets the major in the UI
      * @param m the new major in the UI
@@ -166,7 +162,6 @@ public class ProfileUI extends UI {
     public void setMajor(Major m) {
         major = m;
     }
-
     /**
      * Sets the major according the provided string.
      * @param major the string to reverse lookup major from
@@ -174,7 +169,6 @@ public class ProfileUI extends UI {
     public void setMajorString(String major) {
         this.major = Major.valueOf(major);
     }
-
     /**
      * Sets the preferences in the UI.
      * @param pref the new preferences in the UI
@@ -182,7 +176,6 @@ public class ProfileUI extends UI {
     public void setPreferences(String pref) {
          preferences = pref;
     }
-
     /**
      * Sets the interests in the UI.
      * @param i the new interests in the UI
@@ -190,24 +183,25 @@ public class ProfileUI extends UI {
     public void setInterest(String i) {
         interest = i;
     }
-
     /**
      * Registers a new user.
      * @return the home page if successful, null if not successful
      */
     public String register() {
-        FacesContext context = FacesContext.getCurrentInstance();
         if ("".equals(username)) {
-            context.addMessage(null, new FacesMessage("No username entered."));
+            displayMessage("No username entered.");
             return null;
         } else if (userManager.find(username) != null) {
-            context.addMessage(null, new FacesMessage(
-                    "Username already exists."));
+            displayMessage("Username already exists.");
             return null;
         }
         userManager.setUser(userManager.makeUser(username, password));
-        context.addMessage(null, new FacesMessage("Registration successful."));
+        displayMessage("Registration successful.");
         return "home";
+    }
+    
+    public void displayMessage(String msg) {
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(msg));
     }
 
     /**
@@ -288,8 +282,7 @@ public class ProfileUI extends UI {
      * @return the home page
      */
     public String cancelHome() {
-        return userManager.getUser() instanceof AdminUser
-                ? "adminhome" : "home";
+        return userManager.getUser() instanceof AdminUser ? "adminhome" : "home";
     }
 
     /**
@@ -309,7 +302,11 @@ public class ProfileUI extends UI {
         FacesContext context = FacesContext.getCurrentInstance();
         User user = userManager.getUser();
         user.setUserManager(userManager);
-        if (!user.getUsername().equals(username)
+        if (user.getUsername().equals("")) {
+            context.addMessage(null, new FacesMessage(
+                    "No user name entered."));
+            return null;
+        } else if (!user.getUsername().equals(username)
                 && userManager.find(username) != null) {
             context.addMessage(null, new FacesMessage(
                     "Username is already taken."));

@@ -24,13 +24,20 @@ import java.sql.SQLException;
  */
 public class MovieLogic {
     
-    /**
-     * The number of results to show.
-     */
+    /** The limit of listings. */
     public static final int limit = 50;
+
+    /** The host of the site. */
     public static final String host = "jdbc:derby://localhost:1527/fruit";
+     
+    /** The uName of our team. */
     public static final String uName = "team11";
+    
+    /** The uPass of our password. */
     public static final String uPass= "fruit";
+    
+     /** The error status of program. */
+    public static final int HTTPoK = 200;
     
     /**
      * Finds movies based on a search query.
@@ -38,20 +45,21 @@ public class MovieLogic {
      * @return an array of movies matching the search query
      */
     public static Movie[] searchMovies(String search) {
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies.json?apikey=yedukp76ffytfuy24zsqk7f5&q="
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies."
+                + "json?apikey=yedukp76ffytfuy24zsqk7f5&q="
                     + search.replaceAll("\\s", "+") + "&page_limit=" + limit;
         return findMovies(link);
     }
-    
     /**
      * Finds the latest DVD movie releases.
      * @return an array of new DVD releases
      */
-    public static Movie[] getNewDvd(){
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/new_releases.json?page_limit=" + limit + "&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
+    public static Movie[] getNewDvd() {
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds"
+                + "/new_releases.json?page_limit=" + limit + "&page=1&country"
+                + "=us&apikey=yedukp76ffytfuy24zsqk7f5";
         return findMovies(link);
     }
-    
     /**
      * Finds recommended movies based on major.
      * @param major the major to search for recommended movies from
@@ -62,12 +70,16 @@ public class MovieLogic {
         ArrayList totals = new ArrayList();
         ArrayList reviewCount = new ArrayList();
         try {
-            ResultSet rs = UserManager.querySQL("SELECT MOVIEID,STARRATING FROM REVIEWS WHERE REVIEWMAJOR=\'" + major + "\'");
+            ResultSet rs = UserManager.querySQL("SELECT MOVIEID,STARRATING "
+                    + "FROM REVIEWS WHERE REVIEWMAJOR=\'" + major + "\'");
             while (rs.next()) {
                 int testID = Integer.parseInt(rs.getString("MOVIEID"));
                 if (ids.contains(testID)) {
-                    totals.set(ids.indexOf(testID), Integer.parseInt(rs.getString("STARRATING")) + (int) totals.get(ids.indexOf(testID)));
-                    reviewCount.set(ids.indexOf(testID), 1 + (int) reviewCount.get(ids.indexOf(testID)));
+                    totals.set(ids.indexOf(testID),
+                            Integer.parseInt(rs.getString("STARRATING"))
+                                    + (int) totals.get(ids.indexOf(testID)));
+                    reviewCount.set(ids.indexOf(testID), 1 + (int)
+                            reviewCount.get(ids.indexOf(testID)));
                 } else {
                     ids.add(testID);
                     totals.add(Integer.parseInt(rs.getString("STARRATING")));
@@ -97,82 +109,89 @@ public class MovieLogic {
         }
         return null;
     }
-    
     /**
-     * Takes an id number and returns the movie object
+     * Takes an id number and returns the movie object.
      * @param id the movie's id
      * @return the movie corresponding to the number
      */
     public static Movie getMovieById(int id) {
         //id = 22494;
         id = 770724989;
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + ".json?apikey=yedukp76ffytfuy24zsqk7f5";
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/movie"
+                + "s/" + id + ".json?apikey=yedukp76ffytfuy24zsqk7f5";
         String callResult = getJsonData(link);
         Gson googleJson = new Gson();
-        JsonObject movieJson = googleJson.fromJson(callResult, JsonObject.class);
+        JsonObject movieJson = googleJson.fromJson(callResult,
+                    JsonObject.class);
         String title = movieJson.get("title").getAsString();
-        String thumbnail = ((JsonObject)movieJson.get("posters")).get("thumbnail").getAsString();
+        String thumbnail = ((JsonObject) movieJson.get("posters")).get("thu"
+                + "mbnail").getAsString();
         String synopsis = "None", release = "Unknown";
         if (movieJson.get("synopsis") != null) {
             synopsis = movieJson.get("synopsis").getAsString();
         }
-        JsonElement releaseJson = ((JsonObject)movieJson.get("release_dates")).get("theater");
+        JsonElement releaseJson = ((JsonObject) movieJson.get("release_"
+                + "dates")).get("theater");
         if (releaseJson != null) {
             release = releaseJson.getAsString();
         }
         return new Movie(title, thumbnail, release, synopsis, id);
     }
-    
     /**
-     * Finds the newest movie releases,
+     * Finds the newest movie releases.
      * @return an array of new movies
      */
     public static Movie[] getNewMovies() {
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/movies/in_theaters.json?page_limit=" + limit + "&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/"
+                + "movies/in_theaters.json?page_limit=" + limit + "&page=1&"
+                + "country=us&apikey=yedukp76ffytfuy24zsqk7f5";
         return findMovies(link);
     }
-    
     /**
      * Finds the top rated movies.
      * @return an array of top movies
      */
     public static Movie[] getTopMovies() {
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/dvds/top_rentals.json?limit=" + limit + "&page=1&country=us&apikey=yedukp76ffytfuy24zsqk7f5";
+        String link = "http://api.rottentomatoes.com/api/public/v1.0/lists/"
+                + "dvds/top_rentals.json?limit=" + limit + "&page=1&country="
+                + "us&apikey=yedukp76ffytfuy24zsqk7f5";
         return findMovies(link);
     }
-    
     /**
      * Find movies similar to the specified movie.
      * @param id the id of the movie to search for similar movies with
      * @return an array of similar movies
      */
     public static Movie[] getSimilarMovies(int id) {
-        String link = "http://api.rottentomatoes.com/api/public/v1.0/movies/" + id + "/similar.json?limit=5&apikey=yedukp76ffytfuy24zsqk7f5";
+        String link;
+        link = "http://api.rottentomatoes.com/api/public/v1.0/movies/"
+                + id + "/similar.json?limit=5&apikey=yedukp76ffytfuy24zsqk7f5";
         return findMovies(link);
     }
-    
     /**
      * Gets movies from Rotten Tomatoes based on the query.
      * @param query the URL to get the JSON from
      * @return the movies matching the query
      */
-    public static Movie[] findMovies(String query) {
+    public static Movie[] findMovies(String query){
         String callResult = getJsonData(query);
         Gson googleJson = new Gson();
         JsonObject jo = googleJson.fromJson(callResult, JsonObject.class);
-        JsonArray movieArray = (JsonArray)jo.get("movies");
+        JsonArray movieArray = (JsonArray) jo.get("movies");
         int numMovies = Math.min(limit, movieArray.size());
         Movie[] movies = new Movie[numMovies];
         for (int i = 0; i < numMovies; i++) {
-            JsonObject movieJson = (JsonObject)movieArray.get(i);
+            JsonObject movieJson = (JsonObject) movieArray.get(i);
             String title = movieJson.get("title").getAsString();
-            String thumbnail = ((JsonObject)movieJson.get("posters")).get("thumbnail").getAsString();
+            String thumbnail = ((JsonObject) movieJson.get("posters")).get("th"
+                    + "umbnail").getAsString();
             int id = movieJson.get("id").getAsInt();
             String synopsis = "None", release = "Unknown";
             if (movieJson.get("synopsis") != null) {
                 synopsis = movieJson.get("synopsis").getAsString();
             }
-            JsonElement releaseJson = ((JsonObject)movieJson.get("release_dates")).get("theater");
+            JsonElement releaseJson = ((JsonObject) movieJson.get("release_"
+                    + "dates")).get("theater");
             if (releaseJson != null) {
                 release = releaseJson.getAsString();
             }
@@ -180,9 +199,8 @@ public class MovieLogic {
         }
         return movies;
     }
-    
     /**
-     * Gets JSON data from the API
+     * Gets JSON data from the API.
      * @param link the URL to get the JSON from
      * @return the JSON data
      */
@@ -191,23 +209,24 @@ public class MovieLogic {
         String jsonData = "";
         try {
             url = new URL(link);
-        
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
 
-            if (conn.getResponseCode() != 200) {
-                throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+            if (conn.getResponseCode() != HTTPoK) {
+                throw new RuntimeException("Failed : "
+                        + "HTTP error code : " + conn.getResponseCode());
             }
             BufferedReader br = new BufferedReader(new InputStreamReader(
                     (conn.getInputStream())));
             String output;
             while ((output = br.readLine()) != null) {
-                jsonData+=output;
+                jsonData += output;
             }
             conn.disconnect();
             } catch (MalformedURLException ex) {
-                Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(User.class.getName()).log(Level.SEVERE,
+                        null, ex);
             } catch (IOException ex) {
                 System.out.println("Cannot open url");
                 ex.printStackTrace();
