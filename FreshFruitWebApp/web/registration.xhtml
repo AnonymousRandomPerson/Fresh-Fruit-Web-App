@@ -1,14 +1,70 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE html
+   PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Fresh Fruit</title>
-        
-    </h:head>
-    <h:body>
+        <meta content="" />
+    <title>
+      Fresh Fruit Movie Recommender
+    </title>
+    <meta name="description" content="Created by Team 11 CS2340 Summer 2015" />
+    <meta name="viewport" content="width=1000, initial-scale=1.0, maximum-scale=1.0" />
+    <!--  Loading Bootstrap -->
+    <link href="dist/css/vendor/bootstrap.min.css" rel="stylesheet" />
+    <!--  Loading Flat UI -->
+    <link href="dist/css/flat-ui.css" rel="stylesheet" />
+    <link href="docs/assets/css/demo.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/img/tomato.ico" />
+  </h:head>
+  <h:body>
+      <h:form>
+    <div class="container">
+      <div class="demo-headline">
+        <h1 class="demo-logo">
+          Fresh Fruit
+          <small>Register</small>
+        </h1>
+      </div> <!-- /demo-headline -->
+      <div class="row demo-row">
+          <div class="col-xs-3">
+              <div class="form-group">
+                <p:inputText type="text" value="#{profileui.username}" placeholder="Username" class="form-control" />
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="form-group">
+                <p:inputText type="text" value="#{profileui.password}" placeholder="Password" class="form-control" />
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="form-group">
+                <p:inputText type="text" value="#{profileui.email}" placeholder="Email" class="form-control" />
+              </div>
+            </div>
+            <div class="col-xs-3">
+              <div class="form-group">
+                  <p:inputText type="text" value="#{profileui.interest}" placeholder="Interest" class="form-control" />
+              </div>
+            </div>
+
+      </div>
+      <div class ="col-xs-3">
+      </div>
+        <div class="col-xs-3">
+          <p:commandButton action="#{profileui.register()}" class="btn btn-block btn-lg btn-danger" value="Register"/>
+        </div>
+        <div class ="col-xs-3">
+          <p:commandButton action="#{profileui.cancel()}" class="btn btn-block btn-lg btn-danger" value="Cancel"/>
+        </div>
+    </div>
+      </h:form>
+  </h:body>
+<!--    <h:body>
         <h:form>
             <div align="center">
                 <p:panel id="panel" header="Registration" style="text-align: center; width:30%">
@@ -37,5 +93,5 @@
                 </p:panel> 
             </div>
         </h:form>
-    </h:body>
+    </h:body>-->
 </html>

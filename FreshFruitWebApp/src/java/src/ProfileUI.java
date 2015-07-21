@@ -269,7 +269,7 @@ public class ProfileUI extends UI {
         preferences = "";
         major = null;
         userManager.setUser(null);
-        return "welcome";
+        return "welcome.xhtml";
     }
 
     /**
@@ -295,7 +295,7 @@ public class ProfileUI extends UI {
      */
     public String profile() {
         return userManager.getUser() instanceof AdminUser
-                ? "profileadmin" : "profile";
+                ? "profileadmin" : "profile.xhtml";
     }
 
     /**
