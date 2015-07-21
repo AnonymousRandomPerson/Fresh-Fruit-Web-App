@@ -102,8 +102,8 @@ public class Movie {
      * @return a List of movie reviews
      */
     public final List<Review> getReviews() {
-        return reviews.size() < MovieLogic.limit ? reviews
-                : reviews.subList(0, MovieLogic.limit);
+        return reviews.size() < MovieLogic.LIMIT ? reviews
+                : reviews.subList(0, MovieLogic.LIMIT);
     }
 
     /**
