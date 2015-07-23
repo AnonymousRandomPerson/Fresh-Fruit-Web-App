@@ -36,18 +36,18 @@
             <div class="collapse navbar-collapse" id="navbar-collapse-01">
               <ul class="nav navbar-nav navbar-left">
 
-                <li><a href="#{profileui.profile()}">My Profile</a></li>
-                <li><a href="#{movieui.recommended()}">Recommend Movies</a></li>
-                <li><a href="#{movieui.releases()}">In Theaters</a></li>
-                <li><a href="#{movieui.dvds()}">New DVDs</a></li>
-                <li><a href="#{movieui.top()}">Top Rentals</a></li>
-                <li><a href="#{profileui.logout()}">Logout</a></li>
+                <li><p:commandButton action="#{profileui.profile()}" class="btn btn-block btn-lg btn-info" value="My Profile"/></li>
+                <li><p:commandButton action="#{movieui.recommended()}" class="btn btn-block btn-lg btn-info" value="Recommend Movies"/></li>
+                <li><p:commandButton action="#{movieui.releases()}" class="btn btn-block btn-lg btn-info" value="In Theaters"/></li>
+                <li><p:commandButton action="#{movieui.dvd()}" class="btn btn-block btn-lg btn-info" value="New DVDs"/></li>
+                <li><p:commandButton action="#{movieui.top()}" class="btn btn-block btn-lg btn-info" value="Top Rental"/></li>
+                <li><p:commandButton action="#{profileui.logout()}" class="btn btn-block btn-lg btn-info" value="Logout"/></li>
                </ul>
             </div><!-- /.navbar-collapse -->
           </nav><!-- /navbar -->
         </div>
       </div>
-                    <h:dataTable var="movie" value="#{movieui.movies}">
+      <center><h:dataTable var="movie" value="#{movieui.movies}">
                         <h:column>
                             <h:commandLink action="#{movieui.movieDetails(movie)}">
                                 <p:graphicImage value="#{movie.imagePath}"/>
@@ -58,7 +58,7 @@
                                 <h:outputText value="#{movie.title}"/>
                             </p:commandLink>
                         </h:column>
-                    </h:dataTable>
+          </h:dataTable></center>
 
 
 
