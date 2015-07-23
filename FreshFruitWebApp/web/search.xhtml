@@ -37,10 +37,7 @@
               <ul class="nav navbar-nav navbar-left">
 
                 <li><p:commandButton action="#{profileui.profile()}" class="btn btn-block btn-lg btn-info" value="My Profile"/></li>
-                <li><p:commandButton action="#{movieui.recommended()}" class="btn btn-block btn-lg btn-info" value="Recommend Movies"/></li>
-                <li><p:commandButton action="#{movieui.releases()}" class="btn btn-block btn-lg btn-info" value="In Theaters"/></li>
-                <li><p:commandButton action="#{movieui.dvd()}" class="btn btn-block btn-lg btn-info" value="New DVDs"/></li>
-                <li><p:commandButton action="#{movieui.top()}" class="btn btn-block btn-lg btn-info" value="Top Rental"/></li>
+                <li><p:commandButton action="#{profileui.cancelHome()}" class="btn btn-block btn-lg btn-info" value="Home"/></li>
                 <li><p:commandButton action="#{profileui.logout()}" class="btn btn-block btn-lg btn-info" value="Logout"/></li>
                </ul>
             </div><!-- /.navbar-collapse -->
@@ -68,45 +65,4 @@
 
   </h:form>
   </h:body>
-<!--    <h:body>
-        <h:form>
-            <div align="center">
-            <h:panelGrid columns="2" columnClasses="alignTop">
-                
-                <p:panel id="panel2" style="text-align: center;">
-                    <div align="left">
-                        <p:commandButton update="panel2" value="Home" action="#{profileui.cancelHome()}"
-                                         icon="ui-icon-home" style="width:110px"/>
-                        <br></br>
-                        
-                        <p:commandButton update="panel2" value="Profile" action="#{profileui.profile()}"
-                                         icon="ui-icon-pencil" style="width:110px"/>
-
-                        <br></br>
-                        <p:commandButton update="panel2" value="Logout" action="#{profileui.logout()}"
-                                         icon="ui-icon-power" style="width:110px"/>
-                    </div>
-                </p:panel> 
-                <p:panel id="panel" header="Search Results" style="text-align: center;">
-                    <p:inputText id="search" value="#{movieui.query}">
-                    </p:inputText>
-                    <p:commandButton update="panel" value="Search Movies" action="#{movieui.search()}"
-                                     icon="ui-icon-search"/>
-                    <h:dataTable var="movie" value="#{movieui.movies}">
-                        <h:column>
-                            <h:commandLink action="#{movieui.movieDetails(movie)}">
-                                <p:graphicImage value="#{movie.imagePath}"/>
-                            </h:commandLink>
-                        </h:column>
-                        <h:column>
-                            <p:commandLink action="#{movieui.movieDetails(movie)}">
-                                <h:outputText value="#{movie.title}"/>
-                            </p:commandLink>
-                        </h:column>
-                    </h:dataTable>
-                </p:panel>
-            </h:panelGrid>
-            </div>
-        </h:form>
-    </h:body>-->
 </html>

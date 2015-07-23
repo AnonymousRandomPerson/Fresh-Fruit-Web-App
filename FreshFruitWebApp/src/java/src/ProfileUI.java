@@ -295,7 +295,7 @@ public class ProfileUI extends UI {
      */
     public String profile() {
         return userManager.getUser() instanceof AdminUser
-                ? "profileadmin" : "profile.xhtml";
+                ? "profileadmin" : "profile";
     }
 
     /**
