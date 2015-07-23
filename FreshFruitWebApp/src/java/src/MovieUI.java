@@ -29,7 +29,7 @@ public class MovieUI extends UI {
     private String reviewText;
 
     /** The search screen. */
-    private static final String SEARCHSCREEN = "search";
+    private static final String SEARCHSCREEN = "search.xhtml";
 
     /** The maximum possible star rating. */
     private static final int MAXRATING = 5;
@@ -105,7 +105,7 @@ public class MovieUI extends UI {
     public String search() {
         if (query == null) {
             query = "";
-            return "home";
+            return "home.xhtml";
         } else {
             if (query.equalsIgnoreCase("New Releases")) {
                 releases();
